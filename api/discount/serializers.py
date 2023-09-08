@@ -6,7 +6,7 @@ from common.discount.models import Discount
 class DiscountCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discount
-        fields = ['id', 'guid', 'photo', 'url', 'startDate', 'endDate']
+        fields = ['id', 'guid', 'photo', 'url', 'startDate', 'endDate', 'status']
 
 
 class DiscountListSerializer(serializers.ModelSerializer):
@@ -14,4 +14,4 @@ class DiscountListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Discount
-        fields = ['id', 'guid', 'photo_medium', 'url', 'startDate', 'endDate']
+        fields = ['id', 'guid', 'photo_medium', 'url', 'startDate', 'endDate', 'status']

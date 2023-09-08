@@ -41,8 +41,8 @@ class Product(BaseModel):
     newPrice = models.FloatField(default=0)
     oldPrice = models.FloatField(default=0)
     percent = models.FloatField(default=0)
-    startDate = models.DateField(default=timezone.now)
-    endDate = models.DateField(default=timezone.now)
+    startDate = models.DateField(default=timezone.now().date())
+    endDate = models.DateField(default=timezone.now().date())
     status = models.IntegerField(choices=ProductStatus.choices, default=ProductStatus.HasDiscount)
 
     class Meta:

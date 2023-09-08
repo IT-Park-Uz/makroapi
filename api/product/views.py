@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from api.product.serializers import ProductCreateSerializer, ProductListSerializer, UploadFileSerializer
+from api.tasks import createProducts
 from common.product.models import Product, File
-from api.tasks import create_products
 
 
 class ProductCreateAPIView(CreateAPIView):
@@ -25,7 +25,7 @@ class FileUploadAPIView(CreateAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         file = serializer.save()
-        create_products.apply_async([file.id])
+        createProducts.apply_async([file.id])
 
         return Response(status=status.HTTP_200_OK)
 
@@ -36,6 +36,10 @@ class ProductListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        status = self.request.query_params.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
 
         others = self.request.query_params.get('others')
         guid = self.request.query_params.get('guid')
