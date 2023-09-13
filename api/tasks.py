@@ -34,8 +34,8 @@ def createProducts(file_id):
             percent = round((oldPrice / newPrice) - 1, 1) * 100
 
             product = Product.objects.filter(code=code, title=title).first()
-            status = 1 if product.oldPrice <= oldPrice and newPrice < product.oldPrice else 2
             if product:
+                status = 1 if product.oldPrice <= oldPrice and newPrice < product.oldPrice else 2
                 updateProducts.append(Product(
                     id=product.id,
                     category=category,
@@ -49,6 +49,7 @@ def createProducts(file_id):
                     status=status
                 ))
             else:
+                status = 2
                 newProducts.append(Product(
                     category=category,
                     code=code,

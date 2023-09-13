@@ -347,10 +347,9 @@ CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ORIGIN_ALLOW_ALL = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://market-admin-one.vercel.app',
-    'https://kale-gallery.vercel.app',
-    'https://kale.abba.uz',
-    "http://localhost:5173",
+    'https://api.makromarket.uz',
+    "http://localhost:3000",
+    "http://localhost:3001",
     "http://127.0.0.1:5173",
 ]
 
