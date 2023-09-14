@@ -156,15 +156,16 @@ MIDDLEWARE = [
 # ------------------------------------------------------------------------------
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(APPS_DIR, "static/")
+STATICFILES_DIRS = (
+    os.path.join(APPS_DIR, 'static'),
+)
+STATIC_ROOT = os.path.join(APPS_DIR, 'staticfiles')
 
 # MEDIA
 # ------------------------------------------------------------------------------
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(APPS_DIR, "media/")
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
