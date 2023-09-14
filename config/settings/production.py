@@ -75,7 +75,7 @@ SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env(
     "DJANGO_EMAIL_SUBJECT_PREFIX",
-    default="[makro.uz] ",
+    default="[api.makromarket.uz] ",
 )
 
 # ADMIN
@@ -158,7 +158,7 @@ sentry_sdk.init(
 # -------------------------------------------------------------------------------
 # Tools that generate code samples can use SERVERS to point to the correct domain
 SPECTACULAR_SETTINGS["SERVERS"] = [  # noqa: F405
-    {"url": "https://makro.uz", "description": "Production server"},
+    {"url": "https://api.makromarket.uz", "description": "Production server"},
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
