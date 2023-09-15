@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from api.product.serializers import CategoryCreateSerializer
-
+from common.product.models import Category
 
 
 class CategoryCreateAPIView(CreateAPIView):
