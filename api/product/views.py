@@ -1,11 +1,11 @@
 from django.db.models import Q
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
-from api.product.serializers import ProductCreateSerializer, ProductListSerializer, UploadFileSerializer
+from api.product.serializers import ProductCreateSerializer, ProductListSerializer, UploadFileSerializer, CategoryCreateSerializer
 from api.tasks import createProducts
 from common.product.models import Product, File
 
@@ -67,9 +67,10 @@ class ProductListAPIView(ListAPIView):
         return queryset
 
 
-class ProductDetailAPIView(ListAPIView):
+class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
+    lookup_field = 'guid'
 
 
 class ProductUpdateAPIView(UpdateAPIView):
