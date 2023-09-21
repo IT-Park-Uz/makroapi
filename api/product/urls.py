@@ -12,5 +12,5 @@ urlpatterns = [
     # path("-update/<uuid:guid>/", ProductUpdateAPIView.as_view(), name="product_update"),
     # path("-destroy/<uuid:guid>/", ProductDeleteAPIView.as_view(), name="product_delete"),
 
-    path("-file-upload/", FileUploadAPIView.as_view(), name="upload_file"),
+    # path("-file-upload/", FileUploadAPIView.as_view(), name="upload_file"),
 ]

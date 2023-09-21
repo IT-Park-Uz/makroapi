@@ -11,6 +11,14 @@ from common.product.models import File, Product, Category, ProductStatus
 User = get_user_model()
 
 
+@shared_task(name='deleteProducts')
+def deleteProducts():
+    files = File.objects.all()
+    files.delete()
+    products = Product.objects.all()
+    products.delete()
+
+
 @shared_task(name='createProducts')
 def createProducts(file_id):
     newProducts = []
@@ -62,7 +70,6 @@ def createProducts(file_id):
                     status=status
                 ))
         except Exception as e:
-            print("Error", e)
             continue
     if newProducts:
         Product.objects.bulk_create(newProducts)
