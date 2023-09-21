@@ -14,7 +14,7 @@ from .base import env
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["api.makromarket.uz"]
+ALLOWED_HOSTS = ["api.makromarket.uz", 'localhost:5000', "127:0.0.1:5000"]
 
 # DATABASES
 # ------------------------------------------------------------------------------
