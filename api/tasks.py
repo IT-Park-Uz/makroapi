@@ -43,7 +43,12 @@ def createProducts(file_id):
 
             product = Product.objects.filter(code=code, title=title).first()
             if product:
-                status = 1 if product.oldPrice <= oldPrice and newPrice < product.oldPrice else 2
+                if newPrice != oldPrice:
+                    status = 1
+                else:
+                    status = 2
+                    percent = 0
+                    newPrice = oldPrice
                 updateProducts.append(Product(
                     id=product.id,
                     category=category,
@@ -57,7 +62,7 @@ def createProducts(file_id):
                     status=status
                 ))
             else:
-                status = 2
+                status = 1 if newPrice != oldPrice else 2
                 newProducts.append(Product(
                     category=category,
                     code=code,
@@ -87,7 +92,7 @@ def dailyChecking():
     updateDiscounts = []
     updateNews = []
 
-    for p in Product.objects.all():  # filter(startDate__lt=today, endDate__gt=today):
+    for p in Product.objects.all():
         if p.startDate > today or p.startDate < today < p.endDate:
             continue
         elif p.endDate == today:
@@ -101,7 +106,7 @@ def dailyChecking():
                 status=ProductStatus.HasDiscount
             ))
 
-    for d in Discount.objects.all():  # filter(startDate__lt=today, endDate__gt=today):
+    for d in Discount.objects.all():
         if d.startDate > today or d.startDate < today < d.endDate:
             continue
         elif d.endDate == today:
@@ -115,7 +120,7 @@ def dailyChecking():
                 status=DiscountStatus.ACTIVE
             ))
 
-    for n in News.objects.all():  # filter(startDate__lt=today, endDate__gt=today):
+    for n in News.objects.all():
         if n.startDate > today or n.startDate < today < n.endDate:
             continue
         elif n.endDate == today:
