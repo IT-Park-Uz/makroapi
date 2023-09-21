@@ -42,10 +42,10 @@ class Region(BaseModel):
 class Location(BaseModel):
     region = models.ForeignKey(Region, related_name="regionLocation", on_delete=models.SET_NULL, null=True, blank=True)
     address = models.CharField(max_length=300)
-    longitude = models.CharField(max_length=40)
-    latitude = models.CharField(max_length=40)
-    startDate = models.DateField(default=timezone.now().date())
-    endDate = models.DateField(default=timezone.now().date())
+    longitude = models.CharField(max_length=60, null=True, blank=True)
+    latitude = models.CharField(max_length=60, null=True, blank=True)
+    open = models.TimeField(default=timezone.now().time())
+    close = models.TimeField(default=timezone.now().time())
 
     def __str__(self):
         return f"Title: {self.address} Long: {self.longitude} Lat:{self.latitude}"

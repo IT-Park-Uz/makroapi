@@ -21,7 +21,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'category', 'code', 'title', 'photo', 'newPrice', 'oldPrice', 'percent', 'startDate',
-                  'endDate']
+                  'endDate', 'status']
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -31,4 +31,4 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'category', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent',
-                  'startDate', 'endDate']
+                  'startDate', 'endDate', 'status']
