@@ -6,7 +6,7 @@ from common.product.models import Product, Category, File
 class CategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'guid', 'title']
+        fields = ['id', 'title']
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class UploadFileSerializer(serializers.ModelSerializer):
 class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'guid', 'category', 'code', 'title', 'photo', 'newPrice', 'oldPrice', 'percent', 'startDate',
+        fields = ['id', 'category', 'code', 'title', 'photo', 'newPrice', 'oldPrice', 'percent', 'startDate',
                   'endDate']
 
 
@@ -30,5 +30,5 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'guid', 'category', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent',
+        fields = ['id', 'category', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent',
                   'startDate', 'endDate']

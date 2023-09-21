@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from api.paginator import CustomPagination
@@ -26,7 +26,6 @@ class FileUploadAPIView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         file = serializer.save()
         createProducts.apply_async([file.id])
-
         return Response(status=status.HTTP_200_OK)
 
 
@@ -42,11 +41,11 @@ class ProductListAPIView(ListAPIView):
             queryset = queryset.filter(status=status)
 
         others = self.request.query_params.get('others')
-        guid = self.request.query_params.get('guid')
-        product = Product.objects.filter(guid=guid).first()
+        id = self.request.query_params.get('id')
+        product = Product.objects.filter(id=id).first()
         if others and product:
             try:
-                queryset = queryset.filter(subcategory=product.subcategory).exclude(guid=guid)
+                queryset = queryset.filter(subcategory=product.subcategory).exclude(id=id)
             except:
                 pass
 
@@ -67,7 +66,7 @@ class ProductListAPIView(ListAPIView):
         return queryset
 
 
-class ProductDetailAPIView(ListAPIView):
+class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
 
@@ -76,11 +75,9 @@ class ProductUpdateAPIView(UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductCreateSerializer
     permission_classes = [IsAdmin]
-    lookup_field = 'guid'
 
 
 class ProductDeleteAPIView(DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductCreateSerializer
     permission_classes = [IsAdmin]
-    lookup_field = 'guid'

@@ -32,9 +32,20 @@ class News(BaseModel):
         return self.title
 
 
-class Location(BaseModel):
-    longitude = models.CharField(max_length=40)
-    latitude = models.CharField(max_length=40)
+class Region(BaseModel):
+    title = models.CharField(max_length=150)
 
     def __str__(self):
-        return f"Long: {self.longitude} Lat:{self.latitude} "
+        return f"Title: {self.title}"
+
+
+class Location(BaseModel):
+    region = models.ForeignKey(Region, related_name="regionLocation", on_delete=models.SET_NULL, null=True, blank=True)
+    address = models.CharField(max_length=300)
+    longitude = models.CharField(max_length=40)
+    latitude = models.CharField(max_length=40)
+    startDate = models.DateField(default=timezone.now().date())
+    endDate = models.DateField(default=timezone.now().date())
+
+    def __str__(self):
+        return f"Title: {self.address} Long: {self.longitude} Lat:{self.latitude}"

@@ -12,7 +12,7 @@ from common.news.models import News
 class NewsCreateAPIView(CreateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsCreateSerializer
-    # permission_classes = [IsAdmin]
+    permission_classes = [IsAdmin]
 
 
 class NewsListAPIView(ListAPIView):
@@ -30,10 +30,10 @@ class NewsListAPIView(ListAPIView):
             date = datetime.strptime(date, '%Y-%m-%d').date()
             queryset = queryset.filter(startDate__month=date.month)
         others = self.request.query_params.get('others')
-        guid = self.request.query_params.get('guid')
-        if others and guid:
+        id = self.request.query_params.get('id')
+        if others and id:
             try:
-                queryset = queryset.exclude(guid=guid)
+                queryset = queryset.exclude(id=id)
             except:
                 pass
         q = self.request.query_params.get('q')
@@ -48,18 +48,15 @@ class NewsListAPIView(ListAPIView):
 class NewsDetailAPIView(RetrieveAPIView):
     queryset = News.objects.all()
     serializer_class = NewsDetailSerializer
-    lookup_field = 'guid'
 
 
 class NewsUpdateAPIView(UpdateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsCreateSerializer
     permission_classes = [IsAdmin]
-    lookup_field = 'guid'
 
 
 class NewsDeleteAPIView(DestroyAPIView):
     queryset = News.objects.all()
     serializer_class = NewsCreateSerializer
     permission_classes = [IsAdmin]
-    lookup_field = 'guid'

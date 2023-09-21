@@ -1,8 +1,13 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
 
-from api.location.serializers import LocationCreateSerializer
+from api.location.serializers import LocationCreateSerializer, RegionCreateSerializer
 from api.permissions import IsAdmin
-from common.news.models import Location
+from common.news.models import Location, Region
+
+
+class RegionListAPIView(ListAPIView):
+    queryset = Region.objects.all()
+    serializer_class = RegionCreateSerializer
 
 
 class LocationCreateAPIView(CreateAPIView):
@@ -12,25 +17,29 @@ class LocationCreateAPIView(CreateAPIView):
 
 
 class LocationListAPIView(ListAPIView):
-    queryset = Location.objects.all().order_by('-created_at')
+    queryset = Location.objects.select_related('region').all()
     serializer_class = LocationCreateSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        region = self.request.query_params.get('region')
+        if region:
+            queryset = queryset.filter(region=region)
+        return queryset
 
 
 class LocationDetailAPIView(RetrieveAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationCreateSerializer
-    lookup_field = 'guid'
 
 
 class LocationUpdateAPIView(UpdateAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationCreateSerializer
     permission_classes = [IsAdmin]
-    lookup_field = 'guid'
 
 
 class LocationDeleteAPIView(DestroyAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationCreateSerializer
     permission_classes = [IsAdmin]
-    lookup_field = 'guid'

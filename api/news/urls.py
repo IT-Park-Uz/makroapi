@@ -6,9 +6,9 @@ from api.news.views import NewsCreateAPIView, NewsListAPIView, NewsDetailAPIView
 app_name = 'news'
 
 urlpatterns = [
-    path("-create/", NewsCreateAPIView.as_view(), name="news_create"),
+    # path("-create/", NewsCreateAPIView.as_view(), name="news_create"),
     path("-list/", NewsListAPIView.as_view(), name="news_list"),
-    path("-detail/<uuid:guid>/", NewsDetailAPIView.as_view(), name="news_detail"),
-    path("-update/<uuid:guid>/", NewsUpdateAPIView.as_view(), name="news_update"),
-    path("-destroy/<uuid:guid>/", NewsDeleteAPIView.as_view(), name="news_delete"),
+    path("-detail/<int:pk>/", NewsDetailAPIView.as_view(), name="news_detail"),
+    # path("-update/<int:pk>/", NewsUpdateAPIView.as_view(), name="news_update"),
+    # path("-destroy/<int:pk>/", NewsDeleteAPIView.as_view(), name="news_delete"),
 ]

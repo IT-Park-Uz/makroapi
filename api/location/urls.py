@@ -1,14 +1,15 @@
 from django.urls import path
 
-from api.location.views import LocationCreateAPIView, LocationListAPIView, LocationDetailAPIView, \
-    LocationUpdateAPIView, LocationDeleteAPIView
+from api.location.views import LocationListAPIView, LocationDetailAPIView, \
+    RegionListAPIView
 
 app_name = 'location'
 
 urlpatterns = [
-    path("-create/", LocationCreateAPIView.as_view(), name="location_create"),
+    # path("-create/", LocationCreateAPIView.as_view(), name="location_create"),
+    path("-region-list/", RegionListAPIView.as_view(), name="region_list"),
     path("-list/", LocationListAPIView.as_view(), name="location_list"),
-    path("-detail/<uuid:guid>/", LocationDetailAPIView.as_view(), name="location_detail"),
-    path("-update/<uuid:guid>/", LocationUpdateAPIView.as_view(), name="location_update"),
-    path("-destroy/<uuid:guid>/", LocationDeleteAPIView.as_view(), name="location_delete"),
+    path("-detail/<int:pk>/", LocationDetailAPIView.as_view(), name="location_detail"),
+    # path("-update/<int:pk>/", LocationUpdateAPIView.as_view(), name="location_update"),
+    # path("-destroy/<int:pk>/", LocationDeleteAPIView.as_view(), name="location_delete"),
 ]

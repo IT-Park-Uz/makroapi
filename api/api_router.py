@@ -13,4 +13,5 @@ urlpatterns += [
     path('discount', include("api.discount.urls")),
     path('product', include("api.product.urls")),
     path('news', include("api.news.urls")),
+    path('location', include("api.location.urls")),
 ]
