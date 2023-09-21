@@ -40,15 +40,6 @@ class ProductListAPIView(ListAPIView):
         if status:
             queryset = queryset.filter(status=status)
 
-        others = self.request.query_params.get('others')
-        id = self.request.query_params.get('id')
-        product = Product.objects.filter(id=id).first()
-        if others and product:
-            try:
-                queryset = queryset.filter(subcategory=product.subcategory).exclude(id=id)
-            except:
-                pass
-
         category = self.request.query_params.get('category')
         if category:
             queryset = queryset.filter(category=category)
@@ -69,6 +60,7 @@ class ProductListAPIView(ListAPIView):
 class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
+    lookup_field = 'guid'
 
 
 class ProductUpdateAPIView(UpdateAPIView):
