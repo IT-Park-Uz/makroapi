@@ -1,13 +1,31 @@
+from django.db.models import Prefetch
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
 
-from api.location.serializers import LocationCreateSerializer, RegionCreateSerializer
+from api.location.serializers import LocationCreateSerializer, RegionCreateSerializer, DistrictCreateSerializer
 from api.permissions import IsAdmin
-from common.news.models import Location, Region
+from common.news.models import Location, Region, District
 
 
 class RegionListAPIView(ListAPIView):
     queryset = Region.objects.all()
     serializer_class = RegionCreateSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.prefetch_related(
+            Prefetch(
+                "regionDistrict",
+                queryset=District.objects.all(),
+                to_attr="districts"
+            )
+        )
+        return queryset
+
+
+class DistrictListAPIView(ListAPIView):
+    queryset = District.objects.all()
+    serializer_class = DistrictCreateSerializer
 
 
 class LocationCreateAPIView(CreateAPIView):
@@ -16,15 +34,24 @@ class LocationCreateAPIView(CreateAPIView):
     permission_classes = [IsAdmin]
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="region", type=int),
+        OpenApiParameter(name="district", type=int),
+    ]
+)
 class LocationListAPIView(ListAPIView):
-    queryset = Location.objects.select_related('region').all()
+    queryset = Location.objects.select_related('district', 'district__region').all()
     serializer_class = LocationCreateSerializer
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        district = self.request.query_params.get('district')
+        if district:
+            queryset = queryset.filter(district=district)
         region = self.request.query_params.get('region')
         if region:
-            queryset = queryset.filter(region=region)
+            queryset = queryset.filter(district__region=region)
         return queryset
 
 

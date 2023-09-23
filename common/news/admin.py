@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import News, Region, Location
+from .models import News, Region, Location, District
 
 
 @admin.register(News)
@@ -23,8 +23,21 @@ class LocationInline(admin.TabularInline):
     # fields = ['title', 'address', 'startDate', 'endDate']
 
 
+class DistrictInline(admin.TabularInline):
+    model = District
+    extra = 0
+    exclude = ['created_at']
+    # fields = ['title', 'address', 'startDate', 'endDate']
+
+
+@admin.register(District)
+class DistrictAdmin(admin.ModelAdmin):
+    list_filter = ['title']
+    exclude = ['created_at']
+    inlines = [LocationInline]
+
+
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_filter = ['title']
     exclude = ['created_at']
-    inlines = [LocationInline]

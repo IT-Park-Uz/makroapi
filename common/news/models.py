@@ -8,44 +8,68 @@ from common.users.base import BaseModel, BaseMeta
 
 
 class NewsStatus(models.IntegerChoices):
-    ACTIVE = 1, "ACTIVE"
-    ARCHIVE = 2, "ARCHIVE"
+    ACTIVE = 1, "АКТИВНЫЙ"
+    ARCHIVE = 2, "АРХИВ"
 
 
 class News(BaseModel):
-    title = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
-    videoURL = models.URLField(null=True, blank=True)
+    title = models.CharField(max_length=255, verbose_name="Название", null=True, blank=True)
+    description = models.TextField(verbose_name="Описание", null=True, blank=True)
+    videoURL = models.URLField(verbose_name="URL-адрес видео", null=True, blank=True)
     photo = models.ImageField(_("Image of News"), upload_to='newsImage')
     photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
                                   options={'quality': 90})
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
                                  options={'quality': 90})
-    status = models.IntegerField(choices=NewsStatus.choices, default=NewsStatus.ACTIVE)
-    startDate = models.DateField(default=timezone.now().date())
-    endDate = models.DateField(default=timezone.now().date())
+    status = models.IntegerField(verbose_name="Статус", choices=NewsStatus.choices, default=NewsStatus.ACTIVE)
+    startDate = models.DateField(default=timezone.now, verbose_name="Время начала")
+    endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
 
-    class Meta(BaseMeta):
-        pass
+    class Meta:
+        ordering = ['startDate']
+        verbose_name = "Новости"
+        verbose_name_plural = "Новости"
 
     def __str__(self):
         return self.title
 
 
 class Region(BaseModel):
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150, verbose_name="Название")
+
+    class Meta:
+        verbose_name = "Pегионы"
+        verbose_name_plural = "Pегионы"
 
     def __str__(self):
-        return f"Title: {self.title}"
+        return f"Pегионы: {self.title}"
+
+
+class District(BaseModel):
+    region = models.ForeignKey(Region, verbose_name="Pегион", related_name="regionDistrict", on_delete=models.CASCADE)
+    title = models.CharField(max_length=150, verbose_name="Название")
+
+    class Meta:
+        verbose_name = "Pайоны"
+        verbose_name_plural = "Pайоны"
+
+    def __str__(self):
+        return f"Pайоны: {self.title}"
 
 
 class Location(BaseModel):
-    region = models.ForeignKey(Region, related_name="regionLocation", on_delete=models.SET_NULL, null=True, blank=True)
-    address = models.CharField(max_length=300)
+    district = models.ForeignKey(District, verbose_name="Pайон", related_name="districtLocation",
+                                 on_delete=models.SET_NULL, null=True, blank=True)
+    title = models.CharField(max_length=150, verbose_name="Название")
+    address = models.CharField(max_length=300, verbose_name="Адрес")
     longitude = models.CharField(max_length=60, null=True, blank=True)
     latitude = models.CharField(max_length=60, null=True, blank=True)
-    open = models.TimeField(default=timezone.now().time())
-    close = models.TimeField(default=timezone.now().time())
+    open = models.TimeField(default=timezone.now, verbose_name="Открыть")
+    close = models.TimeField(default=timezone.now, verbose_name="Закрывать")
+
+    class Meta:
+        verbose_name = "Расположение"
+        verbose_name_plural = "Расположение"
 
     def __str__(self):
         return f"Title: {self.address} Long: {self.longitude} Lat:{self.latitude}"

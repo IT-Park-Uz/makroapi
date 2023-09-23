@@ -7,8 +7,8 @@ from common.users.base import BaseModel, BaseMeta
 
 
 class DiscountStatus(models.IntegerChoices):
-    ACTIVE = 1, "ACTIVE"
-    ARCHIVE = 2, "ARCHIVE"
+    ACTIVE = 1, "АКТИВНЫЙ"
+    ARCHIVE = 2, "АРХИВ"
 
 
 class Discount(BaseModel):
@@ -18,12 +18,12 @@ class Discount(BaseModel):
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)], format='PNG',
                                  options={'quality': 100})
     url = models.CharField(max_length=250, null=True, blank=True)
-    status = models.IntegerField(choices=DiscountStatus.choices, default=DiscountStatus.ACTIVE)
-    startDate = models.DateField(default=timezone.now().date())
-    endDate = models.DateField(default=timezone.now().date())
+    status = models.IntegerField(choices=DiscountStatus.choices, verbose_name="Статус", default=DiscountStatus.ACTIVE)
+    startDate = models.DateField(default=timezone.now, verbose_name="Время начала")
+    endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
 
     class Meta(BaseMeta):
         pass
 
     def __str__(self):
-        return f"Discount #{self.id}"
+        return f"Скидка #{self.id}"
