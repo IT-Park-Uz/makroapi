@@ -1,6 +1,6 @@
 from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView, RetrieveAPIView
 
-from api.discount.serializers import DiscountCreateSerializer, DiscountListSerializer
+from api.discount.serializers import DiscountCreateSerializer, DiscountListSerializer, DiscountDetailSerializer
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.discount.models import Discount
@@ -28,7 +28,7 @@ class DiscountListAPIView(ListAPIView):
 
 class DiscountDetailAPIView(RetrieveAPIView):
     queryset = Discount.objects.all()
-    serializer_class = DiscountListSerializer
+    serializer_class = DiscountDetailSerializer
 
 
 class DiscountUpdateAPIView(UpdateAPIView):

@@ -14,4 +14,12 @@ class DiscountListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Discount
-        fields = ['id', 'photo_medium', 'url', 'startDate', 'endDate', 'status']
+        fields = ['id', 'title', 'photo_medium', 'url', 'startDate', 'endDate', 'status']
+
+
+class DiscountDetailSerializer(serializers.ModelSerializer):
+    photo_medium = serializers.ImageField(read_only=True)
+
+    class Meta:
+        model = Discount
+        fields = ['id', 'title', 'description', 'photo_medium', 'url', 'startDate', 'endDate', 'status']
