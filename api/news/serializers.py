@@ -6,7 +6,7 @@ from common.news.models import News
 class NewsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
-        fields = ['id', 'title', 'description', 'videoURL', 'photo', 'status', 'startDate', 'endDate']
+        fields = ['id', 'title', 'description', 'photo']
 
 
 class NewsListSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class NewsListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'videoURL', 'photo_small', 'status']
+        fields = ['id', 'title', 'description', 'photo_small', 'created_at']
 
 
 class NewsDetailSerializer(serializers.ModelSerializer):
@@ -22,4 +22,4 @@ class NewsDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'description', 'videoURL', 'photo_medium', 'status', 'startDate', 'endDate']
+        fields = ['id', 'title', 'description', 'photo_medium', 'created_at']

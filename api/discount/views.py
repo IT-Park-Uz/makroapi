@@ -15,6 +15,7 @@ class DiscountCreateAPIView(CreateAPIView):
 class DiscountListAPIView(ListAPIView):
     queryset = Discount.objects.all()
     serializer_class = DiscountListSerializer
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -22,10 +23,6 @@ class DiscountListAPIView(ListAPIView):
         status = self.request.query_params.get('status')
         if status:
             queryset = queryset.filter(status=status)
-
-        p = self.request.query_params.get('p')
-        if p:
-            self.pagination_class = CustomPagination
         return queryset
 
 

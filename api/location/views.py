@@ -3,6 +3,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
 
 from api.location.serializers import LocationCreateSerializer, RegionCreateSerializer, DistrictCreateSerializer
+from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.news.models import Location, Region, District
 
@@ -10,6 +11,7 @@ from common.news.models import Location, Region, District
 class RegionListAPIView(ListAPIView):
     queryset = Region.objects.all()
     serializer_class = RegionCreateSerializer
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -26,6 +28,7 @@ class RegionListAPIView(ListAPIView):
 class DistrictListAPIView(ListAPIView):
     queryset = District.objects.all()
     serializer_class = DistrictCreateSerializer
+    pagination_class = CustomPagination
 
 
 class LocationCreateAPIView(CreateAPIView):
@@ -43,6 +46,7 @@ class LocationCreateAPIView(CreateAPIView):
 class LocationListAPIView(ListAPIView):
     queryset = Location.objects.select_related('district', 'district__region').all()
     serializer_class = LocationCreateSerializer
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()

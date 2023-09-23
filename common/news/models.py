@@ -15,18 +15,13 @@ class NewsStatus(models.IntegerChoices):
 class News(BaseModel):
     title = models.CharField(max_length=255, verbose_name="Название", null=True, blank=True)
     description = models.TextField(verbose_name="Описание", null=True, blank=True)
-    videoURL = models.URLField(verbose_name="URL-адрес видео", null=True, blank=True)
     photo = models.ImageField(_("Image of News"), upload_to='newsImage')
     photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
                                   options={'quality': 90})
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
                                  options={'quality': 90})
-    status = models.IntegerField(verbose_name="Статус", choices=NewsStatus.choices, default=NewsStatus.ACTIVE)
-    startDate = models.DateField(default=timezone.now, verbose_name="Время начала")
-    endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
 
     class Meta:
-        ordering = ['startDate']
         verbose_name = "Новости"
         verbose_name_plural = "Новости"
 

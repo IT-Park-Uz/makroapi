@@ -13,22 +13,23 @@ class CustomPagination(pagination.LimitOffsetPagination):
 
         limit = request.query_params.get('limit')
         offset = request.query_params.get('offset')
+        p = request.query_params.get('p')
+        if p:
+            if limit:
+                limit = int(limit)
+                if limit > self.max_limit:
+                    raise serializers.ValidationError(
+                        {"limit": ["Limit should be less than or equal to {0}".format(self.max_limit)]})
+                elif limit < self.min_limit:
+                    raise serializers.ValidationError(
+                        {"limit": ["Limit should be greater than or equal to {0}".format(self.min_limit)]})
 
-        if limit:
-            limit = int(limit)
-            if limit > self.max_limit:
-                raise serializers.ValidationError(
-                    {"limit": ["Limit should be less than or equal to {0}".format(self.max_limit)]})
-            elif limit < self.min_limit:
-                raise serializers.ValidationError(
-                    {"limit": ["Limit should be greater than or equal to {0}".format(self.min_limit)]})
-
-        if offset:
-            offset = int(offset)
-            if offset > self.max_offset:
-                raise serializers.ValidationError(
-                    {"offset": ["Offset should be less than or equal to {0}".format(self.max_offset)]})
-            elif offset < self.min_offset:
-                raise serializers.ValidationError(
-                    {"offset": ["Offset should be greater than or equal to {0}".format(self.min_offset)]})
-        return super(self.__class__, self).paginate_queryset(queryset, request, view)
+            if offset:
+                offset = int(offset)
+                if offset > self.max_offset:
+                    raise serializers.ValidationError(
+                        {"offset": ["Offset should be less than or equal to {0}".format(self.max_offset)]})
+                elif offset < self.min_offset:
+                    raise serializers.ValidationError(
+                        {"offset": ["Offset should be greater than or equal to {0}".format(self.min_offset)]})
+            return super(self.__class__, self).paginate_queryset(queryset, request, view)

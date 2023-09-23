@@ -6,8 +6,7 @@ from .models import News, Region, Location, District
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ['display_image', 'title', 'startDate', 'endDate', 'status']
-    exclude = ['created_at']
+    list_display = ['title', 'display_image', 'created_at']
 
     def display_image(self, obj):
         if obj.photo:

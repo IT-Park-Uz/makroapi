@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 from tablib import Dataset
 
 from common.discount.models import Discount, DiscountStatus
-from common.news.models import News, NewsStatus
 from common.product.models import File, Product, Category, ProductStatus
 
 User = get_user_model()
@@ -90,7 +89,6 @@ def dailyChecking():
     today = datetime.datetime.now().date()
     updateProducts = []
     updateDiscounts = []
-    updateNews = []
 
     for p in Product.objects.all():
         if p.startDate > today or p.startDate < today < p.endDate:
@@ -119,26 +117,9 @@ def dailyChecking():
                 id=d.id,
                 status=DiscountStatus.ACTIVE
             ))
-
-    for n in News.objects.all():
-        if n.startDate > today or n.startDate < today < n.endDate:
-            continue
-        elif n.endDate == today:
-            updateNews.append(News(
-                id=n.id,
-                status=NewsStatus.ARCHIVE
-            ))
-        elif n.startDate == today:
-            updateNews.append(News(
-                id=n.id,
-                status=NewsStatus.ACTIVE
-            ))
     if updateProducts:
         Product.objects.bulk_update(updateProducts, fields=['status'])
 
     if updateDiscounts:
         Discount.objects.bulk_update(updateDiscounts, fields=['status'])
-
-    if updateNews:
-        News.objects.bulk_update(updateNews, fields=['status'])
     return {"message": "Status has changed successfully"}

@@ -40,10 +40,10 @@ class Product(BaseModel):
     code = models.CharField(max_length=50, verbose_name="Код", null=True, blank=True)
     title = models.CharField(max_length=200, verbose_name="Название")
     photo = models.ImageField("Image of Product", upload_to='productImage', null=True, blank=True)
-    photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(800, 600)], format='PNG',
-                                  options={'quality': 100})
-    photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 300)], format='PNG',
-                                 options={'quality': 100})
+    # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(800, 600)], format='PNG',
+    #                               options={'quality': 100})
+    # photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 300)], format='PNG',
+    #                              options={'quality': 100})
     newPrice = models.FloatField(default=0, verbose_name="Новая цена")
     oldPrice = models.FloatField(default=0, verbose_name="Старая цена")
     percent = models.FloatField(default=0, verbose_name="Процент")
