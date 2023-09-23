@@ -16,15 +16,13 @@ class NewsAdmin(admin.ModelAdmin):
     display_image.short_description = 'Image'
 
 
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    exclude = ['created_at']
+
+
 class LocationInline(admin.TabularInline):
     model = Location
-    extra = 0
-    exclude = ['created_at']
-    # fields = ['title', 'address', 'startDate', 'endDate']
-
-
-class DistrictInline(admin.TabularInline):
-    model = District
     extra = 0
     exclude = ['created_at']
     # fields = ['title', 'address', 'startDate', 'endDate']
