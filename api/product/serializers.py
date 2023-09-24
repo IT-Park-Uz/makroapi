@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from common.product.models import Product, Category, File
+from common.product.models import Product, Category, File, CatalogFile
 from config.settings.base import env
 
 
@@ -16,6 +16,19 @@ class UploadFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = '__all__'
+
+
+class CatalogFileSerializer(serializers.ModelSerializer):
+    file = serializers.SerializerMethodField()
+
+    def get_file(self, catalog):
+        if catalog.file and not "http" in catalog.file:
+            return env('BASE_URL') + catalog.file.url
+        return None
+
+    class Meta:
+        model = CatalogFile
+        fields = ['id', 'title', 'file', 'endDate']
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):

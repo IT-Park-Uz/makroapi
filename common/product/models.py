@@ -1,7 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from imagekit.models import ImageSpecField
-from pilkit.processors import ResizeToFill
 
 from common.users.base import BaseModel
 
@@ -27,6 +25,20 @@ class File(BaseModel):
 
     def __str__(self):
         return f"ID # {self.id}"
+
+
+class CatalogFile(BaseModel):
+    title = models.CharField(max_length=200, verbose_name="Название")
+    file = models.FileField(verbose_name="Файл", upload_to='uploadFiles')
+    endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
+
+    class Meta:
+        ordering = ['-id']
+        verbose_name = "Оферты"
+        verbose_name_plural = "Оферты"
+
+    def __str__(self):
+        return f"ID # {self.title}"
 
 
 class ProductStatus(models.IntegerChoices):
