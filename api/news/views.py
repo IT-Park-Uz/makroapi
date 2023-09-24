@@ -31,7 +31,7 @@ class NewsListAPIView(ListAPIView):
         date = self.request.query_params.get('date')  # 2023-09-06
         if date:
             date = datetime.strptime(date, '%Y-%m-%d').date()
-            queryset = queryset.filter(created_at__month=date.month)
+            queryset = queryset.filter(created_at__month=date.month, created_at__year=date.year)
         q = self.request.query_params.get('q')
         if q:
             queryset = queryset.filter(Q(title__icontains=q) | Q(description__icontains=q))
