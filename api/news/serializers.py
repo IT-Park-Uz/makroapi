@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from common.news.models import News
+from config.settings.base import env
 
 
 class NewsCreateSerializer(serializers.ModelSerializer):
@@ -18,7 +19,12 @@ class NewsListSerializer(serializers.ModelSerializer):
 
 
 class NewsDetailSerializer(serializers.ModelSerializer):
-    photo_medium = serializers.ImageField(read_only=True)
+    photo_medium = serializers.SerializerMethodField()
+
+    def get_photo_medium(self, news):
+        if news.photo_medium and not "http" in news.photo_medium:
+            return env('BASE_URL') + news.photo_medium.url
+        return None
 
     class Meta:
         model = News

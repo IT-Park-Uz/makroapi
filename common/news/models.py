@@ -1,10 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
 
-from common.users.base import BaseModel, BaseMeta
+from common.users.base import BaseModel
 
 
 class NewsStatus(models.IntegerChoices):
@@ -15,11 +12,13 @@ class NewsStatus(models.IntegerChoices):
 class News(BaseModel):
     title = models.CharField(max_length=255, verbose_name="Название", null=True, blank=True)
     description = models.TextField(verbose_name="Описание", null=True, blank=True)
-    photo = models.ImageField(_("Image of News"), upload_to='newsImage')
-    photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
-                                  options={'quality': 90})
-    photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
-                                 options={'quality': 90})
+    photo = models.ImageField(verbose_name="Изображение", upload_to='newsImage')
+    photo_medium = models.ImageField(verbose_name="Детальное изображение", upload_to='newsImage', null=True, blank=True)
+
+    # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
+    #                               options={'quality': 90})
+    # photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
+    #                              options={'quality': 90})
 
     class Meta:
         verbose_name = "Новости"
