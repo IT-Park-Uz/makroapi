@@ -46,8 +46,10 @@ class DiscountDetailAPIView(RetrieveAPIView):
 
     @method_decorator(cache_page(CACHE_TTL))
     @method_decorator(vary_on_cookie)
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class DiscountUpdateAPIView(UpdateAPIView):
