@@ -1,4 +1,7 @@
 from django.db.models import Prefetch
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
 
@@ -6,6 +9,7 @@ from api.location.serializers import LocationCreateSerializer, RegionCreateSeria
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.news.models import Location, Region, District
+from config.settings.base import CACHE_TTL
 
 
 class RegionListAPIView(ListAPIView):
@@ -13,6 +17,8 @@ class RegionListAPIView(ListAPIView):
     serializer_class = RegionCreateSerializer
     pagination_class = CustomPagination
 
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_cookie)
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.prefetch_related(
@@ -29,6 +35,12 @@ class DistrictListAPIView(ListAPIView):
     queryset = District.objects.all()
     serializer_class = DistrictCreateSerializer
     pagination_class = CustomPagination
+
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_cookie)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
 
 
 class LocationCreateAPIView(CreateAPIView):
@@ -48,6 +60,8 @@ class LocationListAPIView(ListAPIView):
     serializer_class = LocationCreateSerializer
     pagination_class = CustomPagination
 
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_cookie)
     def get_queryset(self):
         queryset = super().get_queryset()
         district = self.request.query_params.get('district')

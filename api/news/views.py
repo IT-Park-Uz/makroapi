@@ -1,6 +1,9 @@
 from datetime import datetime
 
 from django.db.models import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
 
@@ -8,6 +11,7 @@ from api.news.serializers import NewsCreateSerializer, NewsListSerializer, NewsD
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.news.models import News
+from config.settings.base import CACHE_TTL
 
 
 class NewsCreateAPIView(CreateAPIView):
@@ -26,9 +30,11 @@ class NewsListAPIView(ListAPIView):
     serializer_class = NewsListSerializer
     pagination_class = CustomPagination
 
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_cookie)
     def get_queryset(self):
         queryset = super().get_queryset()
-        date = self.request.query_params.get('date')  # 2023-09-06
+        date = self.request.query_params.get('date')
         if date:
             date = datetime.strptime(date, '%Y-%m-%d').date()
             queryset = queryset.filter(created_at__month=date.month, created_at__year=date.year)
@@ -41,6 +47,11 @@ class NewsListAPIView(ListAPIView):
 class NewsDetailAPIView(RetrieveAPIView):
     queryset = News.objects.all()
     serializer_class = NewsDetailSerializer
+
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_cookie)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
 
 class NewsUpdateAPIView(UpdateAPIView):
