@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from imagekit.models import ImageSpecField
+from pilkit.processors import ResizeToFill
 
 from common.users.base import BaseModel
 
@@ -17,8 +19,8 @@ class News(BaseModel):
 
     # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
     #                               options={'quality': 90})
-    # photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
-    #                              options={'quality': 90})
+    photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
+                                 options={'quality': 90})
 
     class Meta:
         verbose_name = "Новости"
