@@ -2,7 +2,7 @@ import datetime
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
-from tablib import Dataset
+# from tablib import Dataset
 
 from common.discount.models import Discount, DiscountStatus
 from common.product.models import File, Product, Category, ProductStatus
@@ -26,7 +26,7 @@ def createProducts(file_id):
     if file is None:
         return {'error': "File does not exists"}
     try:
-        dataset = Dataset()
+        dataset = None #Dataset()
         imported_data = dataset.load(file.file.read(), format='xlsx')
     except Exception as e:
         file.delete()
