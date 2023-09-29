@@ -58,7 +58,7 @@ class Product(BaseModel):
     #                              options={'quality': 100})
     newPrice = models.FloatField(default=0, verbose_name="Новая цена")
     oldPrice = models.FloatField(default=0, verbose_name="Старая цена")
-    percent = models.FloatField(default=0, verbose_name="Процент")
+    percent = models.IntegerField(default=0, verbose_name="Процент")
     startDate = models.DateField(default=timezone.now, verbose_name="Время начала")
     endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
     status = models.IntegerField(choices=ProductStatus.choices, default=ProductStatus.HasDiscount,
