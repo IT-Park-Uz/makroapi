@@ -38,7 +38,7 @@ def createProducts(file_id):
             title = " ".join(data[4].split(',')[:-1]).strip()
             oldPrice = data[6]
             newPrice = data[7]
-            percent = round(((oldPrice - newPrice) / oldPrice) * 100, 2)
+            percent = round(((oldPrice - newPrice) / oldPrice) * 100)
 
             product = Product.objects.filter(code=code, title=title).first()
             if product:
