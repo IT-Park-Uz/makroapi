@@ -27,7 +27,7 @@ class News(BaseModel):
         verbose_name_plural = "Новости"
 
     def __str__(self):
-        return f"Новости: {self.title}"
+        return f"Новости: {self.title_ru}"
 
 
 class Region(BaseModel):
@@ -38,7 +38,7 @@ class Region(BaseModel):
         verbose_name_plural = "Pегионы"
 
     def __str__(self):
-        return f"Pегионы: {self.title}"
+        return f"Pегионы: {self.title_ru}"
 
 
 class District(BaseModel):
@@ -50,7 +50,7 @@ class District(BaseModel):
         verbose_name_plural = "Pайоны"
 
     def __str__(self):
-        return f"Pайоны: {self.title}"
+        return f"Pайоны: {self.title_ru}"
 
 
 class Location(BaseModel):

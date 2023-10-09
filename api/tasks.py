@@ -32,12 +32,12 @@ def createProducts(file_id):
         file.delete()
         return {'error': str(e)}
     for data in imported_data:
-        category, created = Category.objects.get_or_create(title=data[6], title_ru=data[7])
+        category, created = Category.objects.get_or_create(title_uz=data[6], title_ru=data[7])
         try:
             code = data[0]
             product = Product.objects.filter(code=code).first()
 
-            title = " ".join(data[4].split(',')[:-1]).strip()
+            title_uz = " ".join(data[4].split(',')[:-1]).strip()
             title_ru = " ".join(data[5].split(',')[:-1]).strip()
             oldPrice = data[8]
             newPrice = data[9]
@@ -53,7 +53,7 @@ def createProducts(file_id):
                     id=product.id,
                     category=category,
                     code=product.code,
-                    title=product.title,
+                    title_uz=product.title_uz,
                     title_ru=product.title_ru,
                     oldPrice=oldPrice,
                     newPrice=newPrice,
@@ -67,7 +67,7 @@ def createProducts(file_id):
                 newProducts.append(Product(
                     category=category,
                     code=code,
-                    title=title,
+                    title_uz=title_uz,
                     title_ru=title_ru,
                     newPrice=newPrice,
                     oldPrice=oldPrice,
