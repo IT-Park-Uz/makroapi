@@ -32,15 +32,16 @@ def createProducts(file_id):
         file.delete()
         return {'error': str(e)}
     for data in imported_data:
-        category, created = Category.objects.get_or_create(title=data[5])
+        category, created = Category.objects.get_or_create(title=data[6])
         try:
-            code = data[4].split(',')[-1].strip()
-            title = " ".join(data[4].split(',')[:-1]).strip()
-            oldPrice = data[6]
-            newPrice = data[7]
-            percent = round(((oldPrice - newPrice) / oldPrice) * 10)
+            code = data[0]
+            product = Product.objects.filter(code=code).first()
 
-            product = Product.objects.filter(code=code, title=title).first()
+            title = " ".join(data[4].split(',')[:-1]).strip()
+            title_ru = " ".join(data[5].split(',')[:-1]).strip()
+            oldPrice = data[7]
+            newPrice = data[8]
+            percent = round(((oldPrice - newPrice) / oldPrice) * 10)
             if product:
                 if newPrice != oldPrice:
                     status = 1
@@ -66,6 +67,7 @@ def createProducts(file_id):
                     category=category,
                     code=code,
                     title=title,
+                    title_ru=title_ru,
                     newPrice=newPrice,
                     oldPrice=oldPrice,
                     percent=percent,
@@ -79,8 +81,8 @@ def createProducts(file_id):
         Product.objects.bulk_create(newProducts)
     if updateProducts:
         Product.objects.bulk_update(updateProducts,
-                                    fields=['category', 'code', 'title', 'newPrice', 'oldPrice', 'percent', 'startDate',
-                                            'endDate', 'status'])
+                                    fields=['category', 'code', 'title', 'title_uz', 'title_ru', 'newPrice', 'oldPrice',
+                                            'percent', 'startDate', 'endDate', 'status'])
     return {"message": "Product has updated and created successfully"}
 
 
