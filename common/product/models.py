@@ -12,7 +12,7 @@ class Category(BaseModel):
         verbose_name_plural = "Категория"
 
     def __str__(self):
-        return self.title
+        return f"Категория: {self.title}"
 
 
 class File(BaseModel):
@@ -38,7 +38,7 @@ class CatalogFile(BaseModel):
         verbose_name_plural = "Оферты"
 
     def __str__(self):
-        return f"ID # {self.title}"
+        return f"Оферты # {self.title}"
 
 
 class ProductStatus(models.IntegerChoices):
@@ -70,4 +70,4 @@ class Product(BaseModel):
         verbose_name_plural = "Продукт"
 
     def __str__(self):
-        return self.title
+        return f"Продукт: {self.title}"

@@ -27,7 +27,7 @@ class News(BaseModel):
         verbose_name_plural = "Новости"
 
     def __str__(self):
-        return self.title
+        return f"Новости: {self.title}"
 
 
 class Region(BaseModel):

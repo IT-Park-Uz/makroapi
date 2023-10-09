@@ -27,7 +27,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # In Windows, this must be set to your system time zone.
 TIME_ZONE = "Asia/Tashkent"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "uz-uzb"
 # https://docs.djangoproject.com/en/dev/ref/settings/#languages
 # from django.utils.translation import gettext_lazy as _
 # LANGUAGES = [
@@ -68,6 +68,7 @@ DJANGO_APPS = [
     # "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'modeltranslation',
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
@@ -377,3 +378,20 @@ SIMPLE_JWT = {
 CACHE_TTL = 60 * 5
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 Mb limit
+
+
+# TRANSLATIONS
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+
+LANGUAGES = (
+    ('uz', 'Uzbek'),
+    ('ru', 'Russian'),
+)
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('uz', 'ru')
+
+MODELTRANSLATION_TRANSLATION_FILES = (
+    'common.discount.translations',
+    'common.news.translations',
+    'common.product.translations',
+)
