@@ -38,7 +38,7 @@ class Region(BaseModel):
         verbose_name_plural = "Pегионы"
 
     def __str__(self):
-        return f"Pегионы: {self.title_ru}"
+        return f"Pегионы: {self.title}"
 
 
 class District(BaseModel):
@@ -50,7 +50,7 @@ class District(BaseModel):
         verbose_name_plural = "Pайоны"
 
     def __str__(self):
-        return f"Pайоны: {self.title_ru}"
+        return f"Pайоны: {self.title}"
 
 
 class Location(BaseModel):
