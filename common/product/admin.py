@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from common.product.models import Category, Product, File, CatalogFile
+from common.product.models import Category, Product, File, CatalogFile, TopCategory
 
 admin.site.register(File)
 admin.site.register(CatalogFile)
 admin.site.register(Category)
+admin.site.register(TopCategory)
 
 
 @admin.register(Product)

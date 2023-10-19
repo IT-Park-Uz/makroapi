@@ -2,11 +2,10 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from rest_framework.generics import ListAPIView
-from rest_framework.response import Response
 
 from api.paginator import CustomPagination
-from api.product.serializers import CategoryCreateSerializer
-from common.product.models import Category
+from api.product.serializers import CategoryCreateSerializer, TopCategoryCreateSerializer
+from common.product.models import Category, TopCategory, Product, ProductStatus
 from config.settings.base import CACHE_TTL
 
 
@@ -18,11 +17,16 @@ class CategoryListAPIView(ListAPIView):
     @method_decorator(cache_page(CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        return super().list(request, *args, **kwargs)
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+
+class TopCategoryListAPIView(ListAPIView):
+    queryset = TopCategory.objects.filter(
+        Top_categoryProducts__in=Product.objects.filter(status=ProductStatus.HasDiscount)).distinct()
+    serializer_class = TopCategoryCreateSerializer
+    pagination_class = CustomPagination
+
+    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(vary_on_cookie)
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)

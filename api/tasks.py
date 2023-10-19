@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from tablib import Dataset
 
 from common.discount.models import Discount, DiscountStatus
-from common.product.models import File, Product, Category, ProductStatus
+from common.product.models import File, Product, Category, ProductStatus, TopCategory
 
 User = get_user_model()
 
@@ -33,6 +33,11 @@ def createProducts(file_id):
         return {'error': str(e)}
     for data in imported_data:
         category, created = Category.objects.get_or_create(title=data[6], title_ru=data[7])
+        top_category = None
+        if data[10] and data[11]:
+            t1 = data[10].strip()
+            t2 = data[11].strip()
+            top_category, created = TopCategory.objects.get_or_create(title=t1, title_ru=t2)
         try:
             code = data[0]
             product = Product.objects.filter(code=code).first()
@@ -41,7 +46,7 @@ def createProducts(file_id):
             title_ru = " ".join(data[5].split(',')[:-1]).strip()
             oldPrice = data[8]
             newPrice = data[9]
-            percent = ((oldPrice - newPrice) / oldPrice) * 10
+            percent = ((oldPrice - newPrice) / oldPrice) * 100
             if product:
                 if newPrice != oldPrice:
                     status = 1
@@ -52,6 +57,7 @@ def createProducts(file_id):
                 updateProducts.append(Product(
                     id=product.id,
                     category=category,
+                    top_category=top_category,
                     code=product.code,
                     title=product.title,
                     title_ru=product.title_ru,
@@ -66,6 +72,7 @@ def createProducts(file_id):
                 status = 1 if newPrice != oldPrice else 2
                 newProducts.append(Product(
                     category=category,
+                    top_category=top_category,
                     code=code,
                     title=title,
                     title_ru=title_ru,
@@ -76,14 +83,14 @@ def createProducts(file_id):
                     endDate=data[3],
                     status=status
                 ))
-        except Exception as e:
+        except Exception:
             continue
     if newProducts:
         Product.objects.bulk_create(newProducts)
     if updateProducts:
         Product.objects.bulk_update(updateProducts,
-                                    fields=['category', 'code', 'title', 'title_uz', 'title_ru', 'newPrice', 'oldPrice',
-                                            'percent', 'startDate', 'endDate', 'status'])
+                                    fields=['category', 'top_category', 'code', 'title', 'title_uz', 'title_ru',
+                                            'newPrice', 'oldPrice', 'percent', 'startDate', 'endDate', 'status'])
     return {"message": "Product has updated and created successfully"}
 
 

@@ -4,36 +4,13 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from api.paginator import CustomPagination
-from api.permissions import IsAdmin
-from api.product.serializers import ProductCreateSerializer, ProductListSerializer, UploadFileSerializer, \
-    CatalogFileSerializer
-from api.tasks import createProducts
-from common.product.models import Product, File, CatalogFile
+from api.product.serializers import ProductListSerializer, CatalogFileSerializer
+from common.product.models import Product, CatalogFile, ProductStatus
 from config.settings.base import CACHE_TTL
-
-
-class ProductCreateAPIView(CreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductCreateSerializer
-    permission_classes = [IsAdmin]
-
-
-class FileUploadAPIView(CreateAPIView):
-    queryset = File.objects.all()
-    serializer_class = UploadFileSerializer
-    permission_classes = [IsAdmin]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        file = serializer.save()
-        if not file.isCatalog:
-            createProducts.apply_async([file.id])
-        return Response(status=status.HTTP_200_OK)
 
 
 @extend_schema(responses={200: CatalogFileSerializer})
@@ -48,7 +25,7 @@ class CatalogFileAPIView(RetrieveAPIView):
 
 
 class ProductListAPIView(ListAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter(status=ProductStatus.HasDiscount)
     serializer_class = ProductListSerializer
     pagination_class = CustomPagination
 
@@ -93,15 +70,3 @@ class ProductDetailAPIView(RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-
-
-class ProductUpdateAPIView(UpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductCreateSerializer
-    permission_classes = [IsAdmin]
-
-
-class ProductDeleteAPIView(DestroyAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductCreateSerializer
-    permission_classes = [IsAdmin]

@@ -45,9 +45,8 @@ class DistrictListAPIView(ListAPIView):
 
     @method_decorator(cache_page(CACHE_TTL))
     @method_decorator(vary_on_cookie)
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class LocationCreateAPIView(CreateAPIView):

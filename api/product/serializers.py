@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from common.product.models import Product, Category, File, CatalogFile
+from common.product.models import Product, Category, CatalogFile, TopCategory
 from config.settings.base import env
 
 
@@ -10,12 +10,10 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 
-class UploadFileSerializer(serializers.ModelSerializer):
-    file = serializers.FileField(write_only=True)
-
+class TopCategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = File
-        fields = '__all__'
+        model = TopCategory
+        fields = ['id', 'title']
 
 
 class CatalogFileSerializer(serializers.ModelSerializer):
@@ -31,16 +29,7 @@ class CatalogFileSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'file', 'endDate']
 
 
-class ProductCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ['id', 'category', 'code', 'title', 'photo', 'newPrice', 'oldPrice', 'percent', 'startDate',
-                  'endDate', 'status']
-
-
 class ProductListSerializer(serializers.ModelSerializer):
-    category = CategoryCreateSerializer()
-    # photo_medium = serializers.ImageField(read_only=True)
     photo_medium = serializers.SerializerMethodField()
 
     def get_photo_medium(self, product):
@@ -50,5 +39,5 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'category', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent', 'startDate',
+        fields = ['id', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent', 'startDate',
                   'endDate', 'status']
