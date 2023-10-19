@@ -10,7 +10,8 @@ from config.settings.base import CACHE_TTL
 
 
 class CategoryListAPIView(ListAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(
+        categoryProducts__in=Product.objects.filter(status=ProductStatus.HasDiscount)).order_by('-id').distinct()
     serializer_class = CategoryCreateSerializer
     pagination_class = CustomPagination
 
@@ -22,7 +23,7 @@ class CategoryListAPIView(ListAPIView):
 
 class TopCategoryListAPIView(ListAPIView):
     queryset = TopCategory.objects.filter(
-        Top_categoryProducts__in=Product.objects.filter(status=ProductStatus.HasDiscount)).distinct()
+        Top_categoryProducts__in=Product.objects.filter(status=ProductStatus.HasDiscount)).order_by('-id').distinct()
     serializer_class = TopCategoryCreateSerializer
     pagination_class = CustomPagination
 
