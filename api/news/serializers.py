@@ -12,10 +12,16 @@ class NewsCreateSerializer(serializers.ModelSerializer):
 
 class NewsListSerializer(serializers.ModelSerializer):
     photo_small = serializers.ImageField(read_only=True)
+    photo_medium = serializers.SerializerMethodField()
+
+    def get_photo_medium(self, news):
+        if news.photo_medium and not "http" in news.photo_medium:
+            return env('BASE_URL') + news.photo_medium.url
+        return None
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'description', 'photo_small', 'created_at']
+        fields = ['id', 'title', 'description', 'photo_small', 'photo_medium', 'created_at']
 
 
 class NewsDetailSerializer(serializers.ModelSerializer):
