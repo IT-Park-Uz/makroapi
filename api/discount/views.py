@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from api.discount.serializers import DiscountCreateSerializer, DiscountListSerializer, DiscountDetailSerializer
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
-from common.discount.models import Discount
+from common.discount.models import Discount, DiscountStatus
 from config.settings.base import CACHE_TTL
 
 
@@ -18,7 +18,7 @@ class DiscountCreateAPIView(CreateAPIView):
 
 
 class DiscountListAPIView(ListAPIView):
-    queryset = Discount.objects.all()
+    queryset = Discount.objects.filter(status=DiscountStatus.ACTIVE).all()
     serializer_class = DiscountListSerializer
     pagination_class = CustomPagination
 
