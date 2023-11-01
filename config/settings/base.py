@@ -349,11 +349,18 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOWED_ORIGINS = [
+    'https://api.makromarket.uz',
+    "http://localhost:5173",
+]
+CORS_ORIGIN_WHITELIST = (
+    'https://api.makromarket.uz',
+    "http://localhost:5173",
+)
+
 CSRF_TRUSTED_ORIGINS = [
     'https://api.makromarket.uz',
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:5173",
+    "http://localhost:5173",
 ]
 
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
