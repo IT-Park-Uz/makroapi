@@ -30,6 +30,15 @@ class News(BaseModel):
         return f"Новости: {self.title_ru}"
 
 
+class NewsCatalog(BaseModel):
+    news = models.ForeignKey(News, related_name="newsCatalog", on_delete=models.CASCADE)
+    photo_uz = models.ImageField(verbose_name="Изображение uz", upload_to='newsCatalogImage', null=True, blank=True)
+    photo_ru = models.ImageField(verbose_name="Изображение ru", upload_to='newsCatalogImage', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.id}"
+
+
 class Region(BaseModel):
     title = models.CharField(max_length=150, verbose_name="Название")
 
