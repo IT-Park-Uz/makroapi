@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
@@ -7,7 +8,7 @@ from rest_framework.response import Response
 from api.discount.serializers import DiscountCreateSerializer, DiscountListSerializer, DiscountDetailSerializer
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
-from common.discount.models import Discount, DiscountStatus
+from common.discount.models import Discount, DiscountStatus, DiscountCatalog
 from config.settings.base import CACHE_TTL
 
 
@@ -41,7 +42,12 @@ class DiscountListAPIView(ListAPIView):
 
 
 class DiscountDetailAPIView(RetrieveAPIView):
-    queryset = Discount.objects.all()
+    queryset = Discount.objects.prefetch_related(
+        Prefetch(
+            lookup='discountCatalog',
+            queryset=DiscountCatalog.objects.all()
+        )
+    ).all()
     serializer_class = DiscountDetailSerializer
 
     @method_decorator(cache_page(CACHE_TTL))

@@ -33,3 +33,12 @@ class Discount(BaseModel):
 
     def __str__(self):
         return f"Скидка #{self.id}"
+
+
+class DiscountCatalog(BaseModel):
+    discount = models.ForeignKey(Discount, related_name="discountCatalog", on_delete=models.CASCADE)
+    photo_uz = models.ImageField(verbose_name="Изображение uz", upload_to='discountCatalogImage', null=True, blank=True)
+    photo_ru = models.ImageField(verbose_name="Изображение ru", upload_to='discountCatalogImage', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.id}"
