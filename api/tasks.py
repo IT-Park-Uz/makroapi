@@ -46,7 +46,7 @@ def createProducts(file_id):
             title_ru = " ".join(data[5].split(',')[:-1]).strip()
             oldPrice = data[8]
             newPrice = data[9]
-            percent = ((oldPrice - newPrice) / oldPrice) * 100
+            percent = round(((oldPrice - newPrice) / oldPrice) * 100)
             if product:
                 if newPrice != oldPrice:
                     status = 1
