@@ -100,10 +100,10 @@ def dailyChecking():
     updateProducts = []
     updateDiscounts = []
 
-    for p in Product.objects.all():
+    for p in Product.objects.filter(status=ProductStatus.HasDiscount):
         if p.startDate > today or p.startDate < today < p.endDate:
             continue
-        elif p.endDate == today:
+        elif p.endDate <= today:
             updateProducts.append(Product(
                 id=p.id,
                 status=ProductStatus.NoDiscount
