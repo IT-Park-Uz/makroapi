@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.core.cache import cache
 
 from common.discount.models import Discount, DiscountCatalog
 
@@ -31,3 +32,8 @@ class DiscountAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{obj.photo.url}" width="100" height="110" />')
 
     display_image.short_description = 'Image'
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        # Clear the cache after saving the Discount model
+        cache.clear()
