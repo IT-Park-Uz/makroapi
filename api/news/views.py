@@ -12,7 +12,7 @@ from api.news.serializers import NewsCreateSerializer, NewsListSerializer, NewsD
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.news.models import News, NewsCatalog
-from config.settings.base import CACHE_TTL
+from django.conf import settings
 
 
 class NewsCreateAPIView(CreateAPIView):
@@ -31,7 +31,7 @@ class NewsListAPIView(ListAPIView):
     serializer_class = NewsListSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -60,7 +60,7 @@ class NewsDetailAPIView(RetrieveAPIView):
     ).all()
     serializer_class = NewsDetailSerializer
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

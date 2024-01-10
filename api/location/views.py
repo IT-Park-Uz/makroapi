@@ -10,7 +10,7 @@ from api.location.serializers import LocationCreateSerializer, RegionCreateSeria
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.news.models import Location, Region, District
-from config.settings.base import CACHE_TTL
+from django.conf import settings
 
 
 class RegionListAPIView(ListAPIView):
@@ -18,7 +18,7 @@ class RegionListAPIView(ListAPIView):
     serializer_class = RegionCreateSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -43,7 +43,7 @@ class DistrictListAPIView(ListAPIView):
     serializer_class = DistrictCreateSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -66,7 +66,7 @@ class LocationListAPIView(ListAPIView):
     serializer_class = LocationCreateSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())

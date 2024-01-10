@@ -10,14 +10,14 @@ from rest_framework.response import Response
 from api.paginator import CustomPagination
 from api.product.serializers import ProductListSerializer, CatalogFileSerializer
 from common.product.models import Product, CatalogFile, ProductStatus
-from config.settings.base import CACHE_TTL
+from django.conf import settings
 
 
 @extend_schema(responses={200: CatalogFileSerializer})
 class CatalogFileAPIView(RetrieveAPIView):
     queryset = CatalogFile.objects.all()
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def retrieve(self, request, *args, **kwargs):
         file = self.queryset.last()
@@ -29,7 +29,7 @@ class ProductListAPIView(ListAPIView):
     serializer_class = ProductListSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -64,7 +64,7 @@ class ProductDetailAPIView(RetrieveAPIView):
     serializer_class = ProductListSerializer
     lookup_field = 'guid'
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -9,7 +9,7 @@ from api.discount.serializers import DiscountCreateSerializer, DiscountListSeria
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.discount.models import Discount, DiscountStatus, DiscountCatalog
-from config.settings.base import CACHE_TTL
+from django.conf import settings
 
 
 class DiscountCreateAPIView(CreateAPIView):
@@ -23,7 +23,7 @@ class DiscountListAPIView(ListAPIView):
     serializer_class = DiscountListSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -50,7 +50,7 @@ class DiscountDetailAPIView(RetrieveAPIView):
     ).all()
     serializer_class = DiscountDetailSerializer
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

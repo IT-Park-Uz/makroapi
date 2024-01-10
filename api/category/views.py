@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from api.paginator import CustomPagination
 from api.product.serializers import CategoryCreateSerializer, TopCategoryCreateSerializer
 from common.product.models import Category, TopCategory, Product, ProductStatus
-from config.settings.base import CACHE_TTL
+from django.conf import settings
 
 
 class CategoryListAPIView(ListAPIView):
@@ -15,7 +15,7 @@ class CategoryListAPIView(ListAPIView):
     serializer_class = CategoryCreateSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -27,7 +27,7 @@ class TopCategoryListAPIView(ListAPIView):
     serializer_class = TopCategoryCreateSerializer
     pagination_class = CustomPagination
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
