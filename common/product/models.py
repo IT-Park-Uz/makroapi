@@ -80,3 +80,8 @@ class Product(BaseModel):
 
     def __str__(self):
         return f"Продукт: {self.title}"
+
+    def save(self, *args, **kwargs):
+        if self.photo == "":  # Assuming you check if the photo is null
+            self.status = ProductStatus.NoDiscount  # Set the status you want when photo is null
+        super().save(*args, **kwargs)

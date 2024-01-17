@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
@@ -97,13 +98,14 @@ def createProducts(file_id):
 @shared_task(name='dailyChecking')
 def dailyChecking():
     today = datetime.datetime.now().date()
+    today_end = today - timedelta(days=1)
     updateProducts = []
     updateDiscounts = []
 
-    for p in Product.objects.filter(status=ProductStatus.HasDiscount):
+    for p in Product.objects.all():
         if p.startDate > today or p.startDate < today < p.endDate:
             continue
-        elif p.endDate <= today:
+        elif p.endDate == today_end:
             updateProducts.append(Product(
                 id=p.id,
                 status=ProductStatus.NoDiscount
@@ -117,7 +119,7 @@ def dailyChecking():
     for d in Discount.objects.all():
         if d.startDate > today or d.startDate < today < d.endDate:
             continue
-        elif d.endDate == today:
+        elif d.endDate == today_end:
             updateDiscounts.append(Discount(
                 id=d.id,
                 status=DiscountStatus.ARCHIVE
