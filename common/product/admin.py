@@ -2,15 +2,27 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from common.product.models import Category, Product, File, CatalogFile, TopCategory
+from modeltranslation.admin import TabbedTranslationAdmin
 
-admin.site.register(File)
 admin.site.register(CatalogFile)
 admin.site.register(Category)
 admin.site.register(TopCategory)
 
 
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ["pk", 'processed_func']
+    list_display_links = ["pk"]
+    readonly_fields = ("processed", "total")
+
+    def processed_func(self, obj):
+        return f"{obj.processed}/{obj.total}"
+
+    processed_func.short_description = "Обработано/Всего"
+
+
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TabbedTranslationAdmin):
     list_display = ['title', 'display_image', 'code', 'newPrice', 'oldPrice']
     list_filter = ['title', 'newPrice', 'oldPrice']
     search_fields = ['title', 'newPrice', 'oldPrice']

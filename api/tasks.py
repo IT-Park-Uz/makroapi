@@ -1,8 +1,14 @@
+import os
 import datetime
+import shutil
+import zipfile
+
 from datetime import timedelta
 
 from celery import shared_task
+from django.core.files import File as CoreFile
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from tablib import Dataset
 
 from common.discount.models import Discount, DiscountStatus
@@ -21,8 +27,6 @@ def deleteProducts():
 
 @shared_task(name='createProducts')
 def createProducts(file_id):
-    newProducts = []
-    updateProducts = []
     file = File.objects.filter(id=file_id).first()
     if file is None:
         return {'error': "File does not exists"}
@@ -32,66 +36,62 @@ def createProducts(file_id):
     except Exception as e:
         file.delete()
         return {'error': str(e)}
+    target_directory = os.path.join(settings.MEDIA_ROOT, 'extracted_images')
+    os.makedirs(target_directory, exist_ok=True)
+    with zipfile.ZipFile(file.images_file.path, 'r') as zip_ref:
+        zip_ref.extractall(target_directory)
+    image_files = {}
+    for root, _, files in os.walk(target_directory):
+        for file_name in files:
+            if file_name.endswith('.png'):
+                code = os.path.splitext(file_name)[0]
+                image_files[code] = os.path.join(target_directory, file_name)
+
+    total = 0
+    processed = 0
     for data in imported_data:
+        code = data[0]
+        if code is None:
+            continue
+        total += 1
+        code = str(int(code))
+        image_file_path = image_files.get(code)
         category, created = Category.objects.get_or_create(title=data[6], title_ru=data[7])
         top_category = None
         if data[10] and data[11]:
             t1 = data[10].strip()
             t2 = data[11].strip()
             top_category, created = TopCategory.objects.get_or_create(title=t1, title_ru=t2)
-        try:
-            code = data[0]
-            product = Product.objects.filter(code=code).first()
-
-            title = " ".join(data[4].split(',')[:-1]).strip()
-            title_ru = " ".join(data[5].split(',')[:-1]).strip()
-            oldPrice = data[8]
-            newPrice = data[9]
-            percent = round(((oldPrice - newPrice) / oldPrice) * 100)
-            if product:
-                if newPrice != oldPrice:
-                    status = 1
-                else:
-                    status = 2
-                    percent = 0
-                    newPrice = oldPrice
-                updateProducts.append(Product(
-                    id=product.id,
-                    category=category,
-                    top_category=top_category,
-                    code=product.code,
-                    title=product.title,
-                    title_ru=product.title_ru,
-                    oldPrice=oldPrice,
-                    newPrice=newPrice,
-                    percent=percent,
-                    startDate=data[2],
-                    endDate=data[3],
-                    status=status
-                ))
-            else:
-                status = 1 if newPrice != oldPrice else 2
-                newProducts.append(Product(
-                    category=category,
-                    top_category=top_category,
-                    code=code,
-                    title=title,
-                    title_ru=title_ru,
-                    newPrice=newPrice,
-                    oldPrice=oldPrice,
-                    percent=percent,
-                    startDate=data[2],
-                    endDate=data[3],
-                    status=status
-                ))
-        except Exception:
-            continue
-    if newProducts:
-        Product.objects.bulk_create(newProducts)
-    if updateProducts:
-        Product.objects.bulk_update(updateProducts,
-                                    fields=['category', 'top_category', 'code', 'title', 'title_uz', 'title_ru',
-                                            'newPrice', 'oldPrice', 'percent', 'startDate', 'endDate', 'status'])
+        title = " ".join(data[4].split(',')[:-1]).strip()
+        title_ru = " ".join(data[5].split(',')[:-1]).strip()
+        oldPrice = data[8]
+        newPrice = data[9]
+        percent = ((oldPrice - newPrice) / oldPrice) * 100
+        product, created = Product.objects.get_or_create(code=code)
+        product.category = category
+        product.top_category = top_category
+        product.title = title
+        product.title_ru = title_ru
+        product.oldPrice = oldPrice
+        product.newPrice = newPrice
+        product.percent = percent
+        product.startDate = data[2]
+        product.endDate = data[3]
+        if image_file_path:
+            with open(image_file_path, 'rb') as image_file:
+                product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
+                processed += 1
+        if newPrice != oldPrice:
+            product.status = 1
+        else:
+            product.status = 2
+            product.percent = 0
+            product.newPrice = oldPrice
+        product.save()
+    file.total = total
+    file.processed = processed
+    file.save()
+    shutil.rmtree(target_directory)
     return {"message": "Product has updated and created successfully"}
 
 
