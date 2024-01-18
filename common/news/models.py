@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from imagekit.models import ImageSpecField
 from pilkit.processors import ResizeToFill
+from ckeditor_uploader.fields import RichTextUploadingField
 
 from common.users.base import BaseModel
 
@@ -13,7 +14,7 @@ class NewsStatus(models.IntegerChoices):
 
 class News(BaseModel):
     title = models.CharField(max_length=255, verbose_name="Название", null=True, blank=True)
-    description = models.TextField(verbose_name="Описание", null=True, blank=True)
+    description = RichTextUploadingField(verbose_name="Описание", null=True, blank=True)
     photo = models.ImageField(verbose_name="Изображение", upload_to='newsImage')
     photo_medium = models.ImageField(verbose_name="Детальное изображение", upload_to='newsImage', null=True, blank=True)
 

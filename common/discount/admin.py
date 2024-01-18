@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.core.cache import cache
 
 from common.discount.models import Discount, DiscountCatalog
+from modeltranslation.admin import TabbedTranslationAdmin
 
 
 class DiscountCatalogAdmin(admin.TabularInline):
@@ -22,7 +23,7 @@ class DiscountCatalogAdmin(admin.TabularInline):
 
 
 @admin.register(Discount)
-class DiscountAdmin(admin.ModelAdmin):
+class DiscountAdmin(TabbedTranslationAdmin):
     list_display = ['startDate', 'endDate', 'display_image', 'status']
     exclude = ['created_at']
     inlines = [DiscountCatalogAdmin]

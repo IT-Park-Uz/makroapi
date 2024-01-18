@@ -23,9 +23,7 @@ class CatalogFileSerializer(serializers.ModelSerializer):
     def get_file(self, catalog):
         request = self.context.get('request')
         if catalog.file:
-            r = request.build_absolute_uri(catalog.file.url)
-            logging.info(r)
-            return r
+            return request.build_absolute_uri(catalog.file.url)
         return None
 
     class Meta:

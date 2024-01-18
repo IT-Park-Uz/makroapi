@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from modeltranslation.admin import TabbedTranslationAdmin
 
 from .models import News, Region, Location, District, NewsCatalog
 
@@ -21,7 +22,7 @@ class NewsCatalogAdmin(admin.TabularInline):
 
 
 @admin.register(News)
-class NewsAdmin(admin.ModelAdmin):
+class NewsAdmin(TabbedTranslationAdmin):
     list_display = ['title', 'display_image', 'created_at']
     inlines = [NewsCatalogAdmin]
 
