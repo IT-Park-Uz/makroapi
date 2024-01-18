@@ -1,3 +1,8 @@
+import os
+from datetime import datetime
+
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.db import models
 from django.utils import timezone
 
@@ -60,6 +65,11 @@ class ProductStatus(models.IntegerChoices):
     NoDiscount = 2, "Нет скидки"
 
 
+def upload_to(instance, filename):
+    today = datetime.now()
+    return f'product_images/{today.year}/{today.month:02d}/{today.day:02d}/{filename}'
+
+
 class Product(BaseModel):
     category = models.ForeignKey(Category, verbose_name="Категория продукта", related_name='categoryProducts',
                                  on_delete=models.SET_NULL, null=True, blank=True)
@@ -67,7 +77,7 @@ class Product(BaseModel):
                                      on_delete=models.SET_NULL, null=True, blank=True)
     code = models.CharField(max_length=50, verbose_name="Код", null=True, blank=True)
     title = models.CharField(max_length=200, verbose_name="Название")
-    photo = models.ImageField("Image of Product", upload_to='productImage', null=True, blank=True)
+    photo = models.ImageField("Image of Product", upload_to=upload_to, null=True, blank=True)
     newPrice = models.FloatField(default=0, verbose_name="Новая цена")
     oldPrice = models.FloatField(default=0, verbose_name="Старая цена")
     percent = models.IntegerField(default=0, verbose_name="Процент")
@@ -88,3 +98,15 @@ class Product(BaseModel):
         if self.photo == "":  # Assuming you check if the photo is null
             self.status = ProductStatus.NoDiscount  # Set the status you want when photo is null
         super().save(*args, **kwargs)
+
+
+@receiver(pre_delete, sender=Product)
+def delete_product_photo(sender, instance, **kwargs):
+    # Delete the photo file from the operating system when a Product object is deleted
+    if instance.photo:
+        if os.path.isfile(instance.photo.path):
+            os.remove(instance.photo.path)
+
+
+# Connect the signal
+pre_delete.connect(delete_product_photo, sender=Product)
