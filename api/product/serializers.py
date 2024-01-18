@@ -1,7 +1,8 @@
+import logging
+
 from rest_framework import serializers
 
 from common.product.models import Product, Category, CatalogFile, TopCategory
-from config.settings.base import env
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
@@ -20,8 +21,11 @@ class CatalogFileSerializer(serializers.ModelSerializer):
     file = serializers.SerializerMethodField()
 
     def get_file(self, catalog):
-        if catalog.file and not "http" in catalog.file:
-            return env('BASE_URL') + catalog.file.url
+        request = self.context.get('request')
+        if catalog.file:
+            r = request.build_absolute_uri(catalog.file.url)
+            logging.info(r)
+            return r
         return None
 
     class Meta:
@@ -30,12 +34,7 @@ class CatalogFileSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    photo_medium = serializers.SerializerMethodField()
-
-    def get_photo_medium(self, product):
-        if product.photo and not "http" in product.photo:
-            return env('BASE_URL') + product.photo.url
-        return None
+    photo_medium = serializers.ImageField(source="photo")
 
     class Meta:
         model = Product

@@ -21,7 +21,7 @@ class CatalogFileAPIView(RetrieveAPIView):
     @method_decorator(vary_on_cookie)
     def retrieve(self, request, *args, **kwargs):
         file = self.queryset.last()
-        return Response(CatalogFileSerializer(file).data, status=status.HTTP_200_OK)
+        return Response(CatalogFileSerializer(file, context={'request': request}).data, status=status.HTTP_200_OK)
 
 
 class ProductListAPIView(ListAPIView):
