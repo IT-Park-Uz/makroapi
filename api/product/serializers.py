@@ -32,9 +32,16 @@ class CatalogFileSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    photo_medium = serializers.ImageField(source="photo")
+    photo_medium = serializers.ImageField(source="get_https_photo_medium", read_only=True)
 
     class Meta:
         model = Product
         fields = ['id', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent', 'startDate',
                   'endDate', 'status']
+
+    def get_https_photo_medium(self, obj):
+        # Check if the photo field is not None before modifying the URL
+        if obj.photo:
+            # Change 'http' to 'https' in the URL
+            return obj.photo.url.replace('http://', 'https://')
+        return None
