@@ -43,5 +43,5 @@ class ProductListSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and instance.photo:
             photo_absolute_uri = request.build_absolute_uri(instance.photo.url)
-            return photo_absolute_uri
+            return photo_absolute_uri.replace('http', 'https')
         return None
