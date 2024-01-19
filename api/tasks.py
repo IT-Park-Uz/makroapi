@@ -28,6 +28,7 @@ def deleteProducts():
 @shared_task(name='createProducts')
 def createProducts(file_id):
     file = File.objects.filter(id=file_id).first()
+    products_to_create = []
     if file is None:
         return {'error': "File does not exists"}
     try:
@@ -67,16 +68,19 @@ def createProducts(file_id):
         oldPrice = data[8]
         newPrice = data[9]
         percent = ((oldPrice - newPrice) / oldPrice) * 100
-        product, created = Product.objects.get_or_create(code=code)
-        product.category = category
-        product.top_category = top_category
-        product.title = title
-        product.title_ru = title_ru
-        product.oldPrice = oldPrice
-        product.newPrice = newPrice
-        product.percent = percent
-        product.startDate = data[2]
-        product.endDate = data[3]
+        product = Product(
+            code=code,
+            category=category,
+            top_category=top_category,
+            title=title,
+            title_ru=title_ru,
+            oldPrice=oldPrice,
+            newPrice=newPrice,
+            percent=percent,
+            startDate=data[2],
+            endDate=data[3],
+            status=1 if newPrice != oldPrice else 2,
+        )
         if image_file_path:
             with open(image_file_path, 'rb') as image_file:
                 product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
@@ -91,7 +95,12 @@ def createProducts(file_id):
     file.total = total
     file.processed = processed
     file.save()
-    shutil.rmtree(target_directory)
+    for file_or_folder in os.listdir(target_directory):
+        file_or_folder_path = os.path.join(target_directory, file_or_folder)
+        if os.path.isfile(file_or_folder_path):
+            os.unlink(file_or_folder_path)
+        else:
+            shutil.rmtree(file_or_folder_path)
     return {"message": "Product has updated and created successfully"}
 
 

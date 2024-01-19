@@ -7,4 +7,5 @@ from common.product.models import File
 
 @receiver(post_save, sender=File)
 def fileSave(sender, instance, created, **kwargs):
-    createProducts.apply_async([instance.id])
+    if created:
+        createProducts.apply_async([instance.id])
