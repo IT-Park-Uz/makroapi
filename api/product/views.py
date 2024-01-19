@@ -52,21 +52,21 @@ class ProductListAPIView(ListAPIView):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = self.get_serializer(page, context={'request': self.request}, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(queryset, context={'request': self.request}, many=True)
         return Response(serializer.data)
 
 
 class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
-    lookup_field = 'guid'
+    lookup_field = 'pk'
 
     @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
+        serializer = self.get_serializer(instance, context={'request': self.request})
         return Response(serializer.data)
