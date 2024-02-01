@@ -75,7 +75,7 @@ def createProducts(file_id):
             title_ru=title_ru,
             oldPrice=oldPrice,
             newPrice=newPrice,
-            percent=percent,
+            percent=round(percent),
             startDate=data[2],
             endDate=data[3],
             status=1 if newPrice != oldPrice else 2,
