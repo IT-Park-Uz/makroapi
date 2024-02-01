@@ -27,6 +27,7 @@ def deleteProducts():
 
 @shared_task(name='createProducts')
 def createProducts(file_id):
+    print("task created")
     file = File.objects.filter(id=file_id).first()
     if file is None:
         return {'error': "File does not exists"}
@@ -75,7 +76,7 @@ def createProducts(file_id):
             title_ru=title_ru,
             oldPrice=oldPrice,
             newPrice=newPrice,
-            percent=percent,
+            percent=round(percent),
             startDate=data[2],
             endDate=data[3],
             status=1 if newPrice != oldPrice else 2,
