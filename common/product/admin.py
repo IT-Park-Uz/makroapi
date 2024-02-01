@@ -23,11 +23,13 @@ class FileAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(TabbedTranslationAdmin):
-    list_display = ['title', 'display_image', 'code', 'newPrice', 'oldPrice']
+    list_display = ['title', 'display_image', 'code', 'newPrice', 'oldPrice', 'startDate', 'endDate']
+    list_display_links = list_display
     list_filter = ['category', 'top_category']
     search_fields = ['title', 'newPrice', 'oldPrice']
     exclude = ['created_at']
     ordering = ['photo', 'code']
+    date_hierarchy = 'endDate'
 
     def display_image(self, obj):
         if obj.photo:
