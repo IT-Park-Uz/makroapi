@@ -84,7 +84,7 @@ def createProducts(file_id):
             with open(image_file_path, 'rb') as image_file:
                 product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
                 processed += 1
-                product.status = 1
+                product.status = 1 if settings.STAGE == 'prod' else 2
         product.save()
     file.total = total
     file.processed = processed

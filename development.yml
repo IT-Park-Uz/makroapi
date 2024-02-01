@@ -11,6 +11,8 @@ services:
       dockerfile: ./compose/production/django/Dockerfile
 
     image: makro_uz_testing_django
+    environment:
+      - STAGE=dev
     volumes:
       - /var/www/testing.makro.uz/media:/app/makro_uz/media
       - /var/www/testing.makro.uz/static:/app/makro_uz/static

@@ -11,6 +11,8 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: makro_uz_local_django
     container_name: makro_uz_local_django
+    environment:
+      - STAGE=local
     depends_on:
       - postgres
       - redis
