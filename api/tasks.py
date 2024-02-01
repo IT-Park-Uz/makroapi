@@ -28,7 +28,6 @@ def deleteProducts():
 @shared_task(name='createProducts')
 def createProducts(file_id):
     file = File.objects.filter(id=file_id).first()
-    products_to_create = []
     if file is None:
         return {'error': "File does not exists"}
     try:
@@ -85,8 +84,8 @@ def createProducts(file_id):
             with open(image_file_path, 'rb') as image_file:
                 product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
                 processed += 1
-        if newPrice != oldPrice:
-            product.status = 1
+            if newPrice != oldPrice:
+                product.status = 1
         else:
             product.status = 2
             product.percent = 0
