@@ -365,6 +365,7 @@ CORS_ORIGIN_WHITELIST = (
 CSRF_TRUSTED_ORIGINS = [
     'https://api.makromarket.uz',
     "http://localhost:5173",
+    "https://test1.makromarket.uz"
 ]
 
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
