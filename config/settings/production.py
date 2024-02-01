@@ -134,7 +134,7 @@ LOGGING = {
 
 # Sentry
 # ------------------------------------------------------------------------------
-SENTRY_DSN = "https://0a614abd69a8bf056e18a5eda045db7b@o4505908086308864.ingest.sentry.io/4505908087160832"
+SENTRY_DSN = "https://4ba59389e82519489b6660afd876d5fd@o4506181618696192.ingest.sentry.io/4506591518326784"
 SENTRY_LOG_LEVEL = env.int("DJANGO_SENTRY_LOG_LEVEL", logging.INFO)
 
 sentry_logging = LoggingIntegration(
