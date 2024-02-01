@@ -18,10 +18,10 @@ services:
       - postgres
       - redis
     ports:
-      - 5002:5002
+      - 5002:5000
     env_file:
-      - ./.envs/.production/.django
-      - ./.envs/.production/.postgres
+      - ./.envs/.development/.django
+      - ./.envs/.development/.postgres
     command: /start
 
   postgres:
@@ -33,7 +33,7 @@ services:
       - testing_postgres_data:/var/lib/postgresql/data
       - testing_postgres_data_backups:/backups
     env_file:
-      - ./.envs/.production/.postgres
+      - ./.envs/.development/.postgres
 
   redis:
     image: redis:6
