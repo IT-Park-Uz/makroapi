@@ -78,18 +78,13 @@ def createProducts(file_id):
             percent=round(percent),
             startDate=data[2],
             endDate=data[3],
-            status=1 if newPrice != oldPrice else 2,
+            status=2,
         )
         if image_file_path:
             with open(image_file_path, 'rb') as image_file:
                 product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
                 processed += 1
-            if newPrice != oldPrice:
                 product.status = 1
-        else:
-            product.status = 2
-            product.percent = 0
-            product.newPrice = oldPrice
         product.save()
     file.total = total
     file.processed = processed
