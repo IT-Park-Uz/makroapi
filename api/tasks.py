@@ -127,11 +127,6 @@ def dailyChecking():
                 id=d.id,
                 status=DiscountStatus.ARCHIVE
             ))
-        elif d.startDate == today:
-            updateDiscounts.append(Discount(
-                id=d.id,
-                status=DiscountStatus.ACTIVE
-            ))
     if updateProducts:
         Product.objects.bulk_update(updateProducts, fields=['status'])
 
