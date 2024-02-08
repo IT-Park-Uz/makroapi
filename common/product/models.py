@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 
+from django.conf import settings
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.db import models
@@ -95,8 +96,9 @@ class Product(BaseModel):
         return f"Продукт: {self.title}"
 
     def save(self, *args, **kwargs):
-        if self.photo == "":  # Assuming you check if the photo is null
-            self.status = ProductStatus.NoDiscount  # Set the status you want when photo is null
+        if settings.STAGE == 'prod':
+            if self.photo == "":  # Assuming you check if the photo is null
+                self.status = ProductStatus.NoDiscount  # Set the status you want when photo is null
         super().save(*args, **kwargs)
 
 

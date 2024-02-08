@@ -25,9 +25,15 @@ class CatalogFileAPIView(RetrieveAPIView):
 
 
 class ProductListAPIView(ListAPIView):
-    queryset = Product.objects.filter(status=ProductStatus.HasDiscount)
+    queryset = Product.objects.all()
     serializer_class = ProductListSerializer
     pagination_class = CustomPagination
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if settings.STAGE == 'prod':
+            return qs.filter(status=ProductStatus.HasDiscount)
+        return qs
 
     @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)

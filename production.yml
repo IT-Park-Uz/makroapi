@@ -16,6 +16,8 @@ services:
     volumes:
       - /var/www/api.makro.uz/media:/app/makro_uz/media
       - /var/www/api.makro.uz/static:/app/makro_uz/static
+    environment:
+      - STAGE=prod
     depends_on:
       - postgres
       - redis
