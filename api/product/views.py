@@ -8,8 +8,8 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from api.paginator import CustomPagination
-from api.product.serializers import ProductListSerializer, CatalogFileSerializer
-from common.product.models import Product, CatalogFile, ProductStatus
+from api.product.serializers import ProductListSerializer, CatalogFileSerializer, ProductRegionListSerializer
+from common.product.models import Product, CatalogFile, ProductStatus, ProductRegion
 from django.conf import settings
 
 
@@ -22,6 +22,11 @@ class CatalogFileAPIView(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         file = self.queryset.last()
         return Response(CatalogFileSerializer(file, context={'request': request}).data, status=status.HTTP_200_OK)
+
+
+class ProductRegionListAPIView(ListAPIView):
+    queryset = ProductRegion.objects.all()
+    serializer_class = ProductRegionListSerializer
 
 
 class ProductListAPIView(ListAPIView):
@@ -55,6 +60,10 @@ class ProductListAPIView(ListAPIView):
         q = self.request.query_params.get('q')
         if q:
             queryset = queryset.filter(Q(title__icontains=q))
+
+        region = self.request.query_params.get('region')
+        if region:
+            queryset = queryset.filter(Q(region=region))
 
         page = self.paginate_queryset(queryset)
         if page is not None:

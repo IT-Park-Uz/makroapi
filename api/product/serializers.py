@@ -2,7 +2,7 @@ import logging
 
 from rest_framework import serializers
 
-from common.product.models import Product, Category, CatalogFile, TopCategory
+from common.product.models import Product, Category, CatalogFile, TopCategory, ProductRegion
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
@@ -45,3 +45,9 @@ class ProductListSerializer(serializers.ModelSerializer):
             photo_absolute_uri = request.build_absolute_uri(instance.photo.url)
             return photo_absolute_uri.replace('http', 'https')
         return None
+
+
+class ProductRegionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductRegion
+        fields = "__all__"
