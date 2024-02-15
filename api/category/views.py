@@ -20,6 +20,12 @@ class CategoryListAPIView(ListAPIView):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if settings.STAGE != 'prod':
+            return Category.objects.all()
+        return qs
+
 
 class TopCategoryListAPIView(ListAPIView):
     queryset = TopCategory.objects.filter(
