@@ -66,6 +66,12 @@ def createProducts(file_id):
         title_ru = " ".join(data[5].split(',')[:-1]).strip()
         oldPrice = data[8]
         newPrice = data[9]
+        region_str = data[10]
+        region_dict = {
+            "Вся сеть": 3,
+            "Ташкент": 1,
+            "Долина": 2
+        }
         percent = ((oldPrice - newPrice) / oldPrice) * 100
         product = Product(
             code=code,
@@ -79,6 +85,7 @@ def createProducts(file_id):
             startDate=data[2],
             endDate=data[3],
             status=2,
+            region_id=region_dict[region_str]
         )
         if image_file_path:
             with open(image_file_path, 'rb') as image_file:

@@ -10,6 +10,7 @@ def create_objects(apps, schema_editor):
     # Create objects here
     ProductRegion.objects.create(id=1, name_ru="Ташкент", name_uz="Toshkent")
     ProductRegion.objects.create(id=2, name_ru="Ферганская долина", name_uz="Farg'ona vodiysi")
+    ProductRegion.objects.create(id=3, name_ru="Вся сеть", name_uz="Barcha tarmoq")
     Product.objects.all().update(region_id=1)
 
 
