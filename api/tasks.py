@@ -66,7 +66,7 @@ def createProducts(file_id):
         title_ru = " ".join(data[5].split(',')[:-1]).strip()
         oldPrice = data[8]
         newPrice = data[9]
-        region_str = data[10]
+        region_str = data[12]
         region_dict = {
             "Вся сеть": 3,
             "Ташкент": 1,
