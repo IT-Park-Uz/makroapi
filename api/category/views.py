@@ -22,8 +22,9 @@ class CategoryListAPIView(ListAPIView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        if settings.STAGE != 'prod':
-            return Category.objects.all()
+        region_id = self.request.query_params.get('region')
+        if region_id:
+            qs = qs.filter(products__region_id=region_id).distinct()
         return qs
 
 
