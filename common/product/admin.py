@@ -23,9 +23,10 @@ class FileAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(TabbedTranslationAdmin):
-    list_display = ['title', 'display_image', 'code', 'region', 'newPrice', 'oldPrice', 'startDate', 'endDate']
+    list_display = ['title', 'display_image', 'code', 'region', 'newPrice', 'oldPrice', 'endDate', 'status']
     list_display_links = list_display
     list_filter = ['category', 'top_category']
+    list_editable = ["status"]
     search_fields = ['title', 'newPrice', 'oldPrice']
     exclude = ['created_at']
     ordering = ['photo', 'code']
