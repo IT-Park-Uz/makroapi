@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from common.product.models import Category, Product, File, CatalogFile, TopCategory
+from common.product.models import Category, Product, File, CatalogFile, TopCategory, ProductRegion
 from modeltranslation.admin import TabbedTranslationAdmin
 
 admin.site.register(CatalogFile)
@@ -23,9 +23,10 @@ class FileAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(TabbedTranslationAdmin):
-    list_display = ['title', 'display_image', 'code', 'newPrice', 'oldPrice', 'startDate', 'endDate']
-    list_display_links = list_display
+    list_display = ['title', 'display_image', 'code', 'region', 'newPrice', 'oldPrice', 'endDate', 'status']
+    list_display_links = list_display[:-1]
     list_filter = ['category', 'top_category']
+    list_editable = ["status"]
     search_fields = ['title', 'newPrice', 'oldPrice']
     exclude = ['created_at']
     ordering = ['photo', 'code']
@@ -36,3 +37,8 @@ class ProductAdmin(TabbedTranslationAdmin):
             return mark_safe(f'<img src="{obj.photo.url}" width="100" height="110" />')
 
     display_image.short_description = 'Image'
+
+
+@admin.register(ProductRegion)
+class ProductRegionAdmin(admin.ModelAdmin):
+    list_display = ["name_ru", "name_uz"]
