@@ -30,7 +30,7 @@ class ProductRegionListAPIView(ListAPIView):
 
 
 class ProductListAPIView(ListAPIView):
-    queryset = Product.objects.all().order_by("-id")
+    queryset = Product.objects.all().order_by("id")
     serializer_class = ProductListSerializer
     pagination_class = CustomPagination
 
