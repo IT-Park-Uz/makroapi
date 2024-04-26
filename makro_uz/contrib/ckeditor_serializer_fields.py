@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
 
-SEARCH_PATTERN = 'href=\\"' + settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH
+SEARCH_PATTERN = settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH
 REPLACE_WITH = ('href=\\"{domain}' + settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH).format(
     domain=settings.BASE_URL)
 
