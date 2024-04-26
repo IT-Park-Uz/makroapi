@@ -1,7 +1,9 @@
+from django.conf import settings
 from rest_framework import serializers
 
 from common.news.models import News, NewsCatalog
 from config.settings.base import env
+from makro_uz.contrib.ckeditor_serializer_fields import FixAbsolutePathSerializer
 
 
 class NewsCreateSerializer(serializers.ModelSerializer):
@@ -46,6 +48,7 @@ class NewsCatalogImagesSerializer(serializers.ModelSerializer):
 class NewsDetailSerializer(serializers.ModelSerializer):
     photo_medium = serializers.SerializerMethodField()
     newsCatalog = NewsCatalogImagesSerializer(many=True)
+    description = FixAbsolutePathSerializer()
 
     def get_photo_medium(self, news):
         if news.photo_medium and not "http" in news.photo_medium:

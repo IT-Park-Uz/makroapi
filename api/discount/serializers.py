@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from common.discount.models import Discount, DiscountCatalog
 from config.settings.base import env
+from makro_uz.contrib.ckeditor_serializer_fields import FixAbsolutePathSerializer
 
 
 class DiscountCreateSerializer(serializers.ModelSerializer):
@@ -47,6 +48,7 @@ class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
 class DiscountDetailSerializer(serializers.ModelSerializer):
     photo_medium = serializers.ImageField(read_only=True)
     discountCatalog = DiscountCatalogImagesSerializer(many=True)
+    description = FixAbsolutePathSerializer()
 
     class Meta:
         model = Discount
