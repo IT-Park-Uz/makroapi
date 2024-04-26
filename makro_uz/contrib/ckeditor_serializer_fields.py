@@ -2,8 +2,7 @@ from django.conf import settings
 from rest_framework import serializers
 
 SEARCH_PATTERN = settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH
-REPLACE_WITH = ('href=\\"{domain}' + settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH).format(
-    domain=settings.BASE_URL)
+REPLACE_WITH = settings.BASE_URL + settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH
 
 
 class FixAbsolutePathSerializer(serializers.Field):
