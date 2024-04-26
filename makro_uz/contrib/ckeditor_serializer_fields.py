@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 SEARCH_PATTERN = 'href=\\"' + settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH
 REPLACE_WITH = ('href=\\"{domain}' + settings.MEDIA_URL + settings.CKEDITOR_UPLOAD_PATH).format(
-    domain=settings.SITE_DOMAIN)
+    domain=settings.BASE_URL)
 
 
 class FixAbsolutePathSerializer(serializers.Field):
