@@ -70,7 +70,7 @@ def createProducts(file_id):
         region_dict = {
             "Вся сеть": 3,
             "Ташкент": 1,
-            "Долина": 2
+            # "Долина": 2
         }
         percent = ((oldPrice - newPrice) / oldPrice) * 100
         product = Product(
