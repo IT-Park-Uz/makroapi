@@ -6,6 +6,8 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
+from api.product.views import upload_products
+
 # from rest_framework.authtoken.views import obtain_auth_token
 
 
@@ -20,7 +22,7 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="api-schema"), name="docs"),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('test/<int:pk>/', ),
+    path('test/<int:pk>/', upload_products, name='upload'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
