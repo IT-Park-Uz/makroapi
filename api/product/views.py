@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
@@ -9,6 +10,7 @@ from rest_framework.response import Response
 
 from api.paginator import CustomPagination
 from api.product.serializers import ProductListSerializer, CatalogFileSerializer, ProductRegionListSerializer
+from api.tasks import createProducts
 from common.product.models import Product, CatalogFile, ProductStatus, ProductRegion
 from django.conf import settings
 
@@ -85,3 +87,8 @@ class ProductDetailAPIView(RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance, context={'request': self.request})
         return Response(serializer.data)
+
+
+def upload_products(request, pk):
+    createProducts.apply_async([pk])
+    return HttpResponse('<h1>Процесс начат!</h1>')

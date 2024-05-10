@@ -20,6 +20,7 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="api-schema"), name="docs"),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('test/<int:pk>/', ),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
