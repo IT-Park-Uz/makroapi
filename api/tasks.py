@@ -52,7 +52,7 @@ def createProducts(file_id):
 
         total = 0
         processed = 0
-        for data in imported_data:
+        for num, data in enumerate(imported_data):
             code = data[0]
             if code is None:
                 continue
@@ -97,7 +97,8 @@ def createProducts(file_id):
                     startDate=start_date,
                     endDate=end_date,
                     status=2,
-                    region_id=region_dict[region_str]
+                    region_id=region_dict[region_str],
+                    order=num+1
                 )
 
                 if image_file_path:

@@ -99,6 +99,7 @@ class Product(BaseModel):
     endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
     status = models.IntegerField(choices=ProductStatus.choices, default=ProductStatus.HasDiscount,
                                  verbose_name="Статус")
+    order = models.IntegerField(default=1)
 
     class Meta:
         ordering = ['-id']
