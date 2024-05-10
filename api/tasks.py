@@ -100,6 +100,7 @@ def createProducts(file_id):
                 product.save()
             except Exception as e:
                 message += f"Error saving product {code}: {str(e)}"
+                file.save()
         file.total = total
         file.processed = processed
         file.save()
@@ -110,8 +111,9 @@ def createProducts(file_id):
             else:
                 shutil.rmtree(file_or_folder_path)
     except Exception as e:
-        file.message = str(e)
-        file.save()
+        message += f"Some error for exception: {e}"
+    file.message = message
+    file.save()
     return {"message": message}
 
 
