@@ -28,16 +28,16 @@ def deleteProducts():
 @shared_task(name='createProducts')
 def createProducts(file_id):
     file = File.objects.filter(id=file_id).first()
-    message = "Product has updated and created successfully"
+    message = "Begin\n"
     try:
         if file is None:
-            message = "File does not exists"
+            message += "File does not exists\n"
             raise Exception(message)
         try:
             dataset = Dataset()
             imported_data = dataset.load(file.file.read(), format='xlsx')
         except Exception as e:
-            message = "Error reading dataset"
+            message += "Error reading dataset\n"
             raise Exception(message)
         target_directory = os.path.join(settings.MEDIA_ROOT, 'extracted_images')
         os.makedirs(target_directory, exist_ok=True)
@@ -90,12 +90,15 @@ def createProducts(file_id):
                 status=2,
                 region_id=region_dict[region_str]
             )
-            if image_file_path:
-                with open(image_file_path, 'rb') as image_file:
-                    product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
-                    processed += 1
-                    product.status = 1 if settings.STAGE == 'prod' else 2
-            product.save()
+            try:
+                if image_file_path:
+                    with open(image_file_path, 'rb') as image_file:
+                        product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
+                        processed += 1
+                        product.status = ProductStatus.HasDiscount if settings.STAGE == 'prod' else ProductStatus.NoDiscount
+                product.save()
+            except Exception as e:
+                message += f"Error saving product {code}: {str(e)}"
         file.total = total
         file.processed = processed
         file.save()
