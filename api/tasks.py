@@ -78,7 +78,7 @@ def createProducts(file_id):
             percent = ((oldPrice - newPrice) / oldPrice) * 100
             start_date = data[2]
             end_date = data[3]
-
+            message += str(type(start_date))
             # Check if the data is a datetime object, if not, convert it to a string
             if isinstance(start_date, datetime.datetime):
                 start_date = start_date.isoformat()
