@@ -37,7 +37,7 @@ class File(BaseModel):
     images_file = models.FileField(verbose_name="Архив с изображениями", upload_to='upload_image_files')
     processed = models.IntegerField(verbose_name="Обработано", default=0)
     total = models.IntegerField(verbose_name="Всего продуктов", default=0)
-    message = models.TextField()
+    message = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['-id']
