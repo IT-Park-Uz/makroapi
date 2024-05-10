@@ -65,8 +65,8 @@ def createProducts(file_id):
                 t1 = data[10].strip()
                 t2 = data[11].strip()
                 top_category, created = TopCategory.objects.get_or_create(title=t1, title_ru=t2)
-            title = " ".join(data[4].split(',')[:-1]).strip()
-            title_ru = " ".join(data[5].split(',')[:-1]).strip()
+            title = data[4].split(',')[0]
+            title_ru = data[5].split(',')[0]
             oldPrice = data[8]
             newPrice = data[9]
             region_str = data[12].strip()
