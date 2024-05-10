@@ -76,21 +76,22 @@ def createProducts(file_id):
                 # "Долина": 2
             }
             percent = ((oldPrice - newPrice) / oldPrice) * 100
-            product = Product(
-                code=code,
-                category=category,
-                top_category=top_category,
-                title=title,
-                title_ru=title_ru,
-                oldPrice=oldPrice,
-                newPrice=newPrice,
-                percent=round(percent),
-                startDate=data[2],
-                endDate=data[3],
-                status=2,
-                region_id=region_dict[region_str]
-            )
             try:
+                product = Product(
+                    code=code,
+                    category=category,
+                    top_category=top_category,
+                    title=title,
+                    title_ru=title_ru,
+                    oldPrice=oldPrice,
+                    newPrice=newPrice,
+                    percent=round(percent),
+                    startDate=data[2],
+                    endDate=data[3],
+                    status=2,
+                    region_id=region_dict[region_str]
+                )
+
                 if image_file_path:
                     with open(image_file_path, 'rb') as image_file:
                         product.photo.save(f'{code}.png', CoreFile(image_file), save=True)
