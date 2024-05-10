@@ -76,6 +76,15 @@ def createProducts(file_id):
                 # "Долина": 2
             }
             percent = ((oldPrice - newPrice) / oldPrice) * 100
+            start_date = data[2]
+            end_date = data[3]
+
+            # Check if the data is a datetime object, if not, convert it to a string
+            if isinstance(start_date, datetime.datetime):
+                start_date = start_date.isoformat()
+
+            if isinstance(end_date, datetime.datetime):
+                end_date = end_date.isoformat()
             try:
                 product = Product(
                     code=code,
@@ -86,8 +95,8 @@ def createProducts(file_id):
                     oldPrice=oldPrice,
                     newPrice=newPrice,
                     percent=round(percent),
-                    startDate=data[2],
-                    endDate=data[3],
+                    startDate=start_date,
+                    endDate=end_date,
                     status=2,
                     region_id=region_dict[region_str]
                 )
@@ -99,7 +108,7 @@ def createProducts(file_id):
                         product.status = ProductStatus.HasDiscount if settings.STAGE == 'prod' else ProductStatus.NoDiscount
                 product.save()
             except Exception as e:
-                message += f"Error saving product {code}: {str(e)}"
+                message += f"Error saving product {code}: {str(e)}\n"
                 file.save()
         file.total = total
         file.processed = processed
@@ -111,7 +120,7 @@ def createProducts(file_id):
             else:
                 shutil.rmtree(file_or_folder_path)
     except Exception as e:
-        message += f"Some error for exception: {e}"
+        message += f"Some error for exception: {e}\n"
     file.message = message
     file.save()
     return {"message": message}
