@@ -53,7 +53,7 @@ class ProductListAPIView(ListAPIView):
 
         category = self.request.query_params.get('category')
         if category:
-            queryset = queryset.filter(category=category)
+            queryset = queryset.filter(Q(category=category))
 
         min = self.request.query_params.get('min')
         max = self.request.query_params.get('max')
