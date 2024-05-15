@@ -59,7 +59,7 @@ def createProducts(file_id):
             total += 1
             code = str(int(code))
             image_file_path = image_files.get(code)
-            category, created = Category.objects.get_or_create(title=data[6], title_ru=data[7])
+            category, created = Category.objects.get_or_create(title=data[6].strip(), title_ru=data[7].strip())
             top_category = None
             if data[10] and data[11]:
                 t1 = data[10].strip()
