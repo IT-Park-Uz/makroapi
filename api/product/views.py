@@ -42,7 +42,7 @@ class ProductListAPIView(ListAPIView):
             return qs.filter(status=ProductStatus.HasDiscount)
         return qs
 
-    # @method_decorator(cache_page(settings.CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
