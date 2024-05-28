@@ -50,6 +50,7 @@ class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
 class DiscountDetailSerializer(serializers.ModelSerializer):
     discountCatalog = DiscountCatalogImagesSerializer(many=True)
     description = FixAbsolutePathSerializer()
+    photo_medium = serializers.ImageField(read_only=True)
 
     class Meta:
         model = Discount
