@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rest_framework import serializers
 
 from common.discount.models import Discount, DiscountCatalog
@@ -13,9 +15,10 @@ class DiscountCreateSerializer(serializers.ModelSerializer):
 
 class DiscountListSerializer(serializers.ModelSerializer):
     photo_medium = serializers.ImageField(read_only=True)
+    photo_medium_mobile = serializers.ImageField(read_only=True)
     file = serializers.SerializerMethodField()
 
-    def get_file(self, catalog):
+    def get_file(self, catalog) -> Optional[str]:
         if catalog.file and not "http" in catalog.file:
             return env('BASE_URL') + catalog.file.url
         return None
@@ -23,19 +26,19 @@ class DiscountListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discount
         fields = ['id', 'title', 'photo_medium', 'url', 'startDate', 'endDate', 'status', 'titleFile', 'file',
-                  'endDateFile']
+                  'endDateFile', 'photo_medium_mobile']
 
 
 class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
     photo_uz = serializers.SerializerMethodField()
     photo_ru = serializers.SerializerMethodField()
 
-    def get_photo_uz(self, news):
+    def get_photo_uz(self, news) -> Optional[str]:
         if news.photo_uz and not "http" in news.photo_uz:
             return env('BASE_URL') + news.photo_uz.url
         return None
 
-    def get_photo_ru(self, news):
+    def get_photo_ru(self, news) -> Optional[str]:
         if news.photo_ru and not "http" in news.photo_ru:
             return env('BASE_URL') + news.photo_ru.url
         return None
@@ -47,6 +50,7 @@ class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
 
 class DiscountDetailSerializer(serializers.ModelSerializer):
     photo_medium = serializers.ImageField(read_only=True)
+    photo_medium_mobile = serializers.ImageField(read_only=True)
     discountCatalog = DiscountCatalogImagesSerializer(many=True)
     description = FixAbsolutePathSerializer()
 

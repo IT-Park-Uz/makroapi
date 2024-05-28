@@ -17,6 +17,9 @@ class News(BaseModel):
     description = RichTextUploadingField(verbose_name="Описание", null=True, blank=True)
     photo = models.ImageField(verbose_name="Изображение", upload_to='newsImage')
     photo_medium = models.ImageField(verbose_name="Детальное изображение", upload_to='newsImage', null=True, blank=True)
+    photo_mobile = models.ImageField(verbose_name="Изображение для мобилки", upload_to='newsImage')
+    photo_medium_mobile = models.ImageField(verbose_name="Детальное изображение",
+                                            upload_to='newsImageMobile', null=True, blank=True)
 
     # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
     #                               options={'quality': 90})
@@ -28,7 +31,7 @@ class News(BaseModel):
         verbose_name_plural = "Новости"
 
     def __str__(self):
-        return f"Новости: {self.title_ru}"
+        return f"Новости: {self.title}"
 
 
 class NewsCatalog(BaseModel):

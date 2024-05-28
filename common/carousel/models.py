@@ -15,8 +15,8 @@ class CarouselItem(BaseModel):
 
     def __str__(self):
         if self.discount:
-            return f"Элемент карусели: Скидка #{self.discount.id}"
+            return f"Элемент карусели: Скидка #{self.discount.title}"
         elif self.news:
-            return f"Элемент карусели: Новости #{self.news.id}"
+            return f"Элемент карусели: Новости #{self.news.title}"
         else:
             return "Элемент карусели без содержимого"

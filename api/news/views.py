@@ -5,20 +5,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.response import Response
 
-from api.news.serializers import NewsCreateSerializer, NewsListSerializer, NewsDetailSerializer
+from api.news.serializers import NewsListSerializer, NewsDetailSerializer
 from api.paginator import CustomPagination
-from api.permissions import IsAdmin
 from common.news.models import News, NewsCatalog
 from django.conf import settings
-
-
-class NewsCreateAPIView(CreateAPIView):
-    queryset = News.objects.all()
-    serializer_class = NewsCreateSerializer
-    permission_classes = [IsAdmin]
 
 
 @extend_schema(
@@ -66,15 +59,3 @@ class NewsDetailAPIView(RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-
-
-class NewsUpdateAPIView(UpdateAPIView):
-    queryset = News.objects.all()
-    serializer_class = NewsCreateSerializer
-    permission_classes = [IsAdmin]
-
-
-class NewsDeleteAPIView(DestroyAPIView):
-    queryset = News.objects.all()
-    serializer_class = NewsCreateSerializer
-    permission_classes = [IsAdmin]

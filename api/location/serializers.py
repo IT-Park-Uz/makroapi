@@ -12,7 +12,7 @@ class DistrictCreateSerializer(serializers.ModelSerializer):
 class RegionCreateSerializer(serializers.ModelSerializer):
     districts = serializers.SerializerMethodField()
 
-    def get_districts(self, obj):
+    def get_districts(self, obj) -> DistrictCreateSerializer(many=True):
         return DistrictCreateSerializer(obj.districts, many=True).data
 
     class Meta:

@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from rest_framework import serializers
 
@@ -20,7 +21,7 @@ class TopCategoryCreateSerializer(serializers.ModelSerializer):
 class CatalogFileSerializer(serializers.ModelSerializer):
     file = serializers.SerializerMethodField()
 
-    def get_file(self, catalog):
+    def get_file(self, catalog) -> Optional[str]:
         request = self.context.get('request')
         if catalog.file:
             return request.build_absolute_uri(catalog.file.url)
@@ -39,7 +40,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = ['id', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent', 'startDate',
                   'endDate', 'status']
 
-    def get_photo_medium(self, instance):
+    def get_photo_medium(self, instance) -> Optional[str]:
         request = self.context.get('request')
         if request and instance.photo:
             photo_absolute_uri = request.build_absolute_uri(instance.photo.url)
