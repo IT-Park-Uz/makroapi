@@ -18,8 +18,6 @@ class News(BaseModel):
     photo = models.ImageField(verbose_name="Изображение", upload_to='newsImage')
     photo_medium = models.ImageField(verbose_name="Детальное изображение", upload_to='newsImage', null=True, blank=True)
     photo_mobile = models.ImageField(verbose_name="Изображение для мобилки", upload_to='newsImage')
-    photo_medium_mobile = models.ImageField(verbose_name="Детальное изображение",
-                                            upload_to='newsImageMobile', null=True, blank=True)
 
     # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
     #                               options={'quality': 90})

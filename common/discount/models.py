@@ -21,8 +21,8 @@ class Discount(BaseModel):
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)], format='PNG',
                                  options={'quality': 100})
     photo_mobile = models.ImageField("Изображение для мобилки", upload_to='discountImageMobile')
-    photo_medium_mobile = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)],
-                                         format='PNG', options={'quality': 100})
+    # photo_medium_mobile = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)],
+    #                                      format='PNG', options={'quality': 100})
     photo_small_mobile = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)],
                                         format='PNG', options={'quality': 100})
     url = models.CharField(max_length=250, null=True, blank=True)

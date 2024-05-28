@@ -11,22 +11,16 @@ from makro_uz.contrib.ckeditor_serializer_fields import FixAbsolutePathSerialize
 class NewsListSerializer(serializers.ModelSerializer):
     photo_small = serializers.ImageField(read_only=True)
     photo_medium = serializers.SerializerMethodField()
-    photo_medium_mobile = serializers.SerializerMethodField()
 
     def get_photo_medium(self, news) -> Optional[str]:
         if news.photo_medium and not "http" in news.photo_medium:
             return env('BASE_URL') + news.photo_medium.url
         return None
 
-    def get_photo_medium_mobile(self, news) -> Optional[str]:
-        if news.photo_medium_mobile and not "http" in news.photo_medium_mobile:
-            return env('BASE_URL') + news.photo_medium_mobile.url
-        return None
-
     class Meta:
         model = News
         fields = ['id', 'title', 'description', 'photo_small', 'photo_medium',
-                  'photo_medium_mobile', 'created_at']
+                  'photo_mobile', 'created_at']
 
 
 class NewsCatalogImagesSerializer(serializers.ModelSerializer):
@@ -50,7 +44,6 @@ class NewsCatalogImagesSerializer(serializers.ModelSerializer):
 
 class NewsDetailSerializer(serializers.ModelSerializer):
     photo_medium = serializers.SerializerMethodField()
-    photo_medium_mobile = serializers.SerializerMethodField()
     newsCatalog = NewsCatalogImagesSerializer(many=True)
     description = FixAbsolutePathSerializer()
 
@@ -59,11 +52,6 @@ class NewsDetailSerializer(serializers.ModelSerializer):
             return env('BASE_URL') + news.photo_medium.url
         return None
 
-    def get_photo_medium_mobile(self, news) -> Optional[str]:
-        if news.photo_medium_mobile and not "http" in news.photo_medium_mobile:
-            return env('BASE_URL') + news.photo_medium_mobile.url
-        return None
-
     class Meta:
         model = News
-        fields = ['id', 'title', 'description', 'photo_medium', 'photo_medium_mobile', 'newsCatalog', 'created_at']
+        fields = ['id', 'title', 'description', 'photo_medium', 'photo_mobile', 'newsCatalog', 'created_at']

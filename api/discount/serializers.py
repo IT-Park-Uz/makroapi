@@ -15,7 +15,6 @@ class DiscountCreateSerializer(serializers.ModelSerializer):
 
 class DiscountListSerializer(serializers.ModelSerializer):
     photo_medium = serializers.ImageField(read_only=True)
-    photo_medium_mobile = serializers.ImageField(read_only=True)
     file = serializers.SerializerMethodField()
 
     def get_file(self, catalog) -> Optional[str]:
@@ -26,7 +25,7 @@ class DiscountListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discount
         fields = ['id', 'title', 'photo_medium', 'url', 'startDate', 'endDate', 'status', 'titleFile', 'file',
-                  'endDateFile', 'photo_medium_mobile']
+                  'endDateFile', 'photo_mobile']
 
 
 class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
@@ -49,12 +48,10 @@ class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
 
 
 class DiscountDetailSerializer(serializers.ModelSerializer):
-    photo_medium = serializers.ImageField(read_only=True)
-    photo_medium_mobile = serializers.ImageField(read_only=True)
     discountCatalog = DiscountCatalogImagesSerializer(many=True)
     description = FixAbsolutePathSerializer()
 
     class Meta:
         model = Discount
         fields = ['id', 'title', 'description', 'photo_medium', 'url', 'startDate', 'endDate', 'status', 'titleFile',
-                  'file', 'endDateFile', 'discountCatalog']
+                  'file', 'endDateFile', 'discountCatalog', 'photo_mobile']
