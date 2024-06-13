@@ -56,7 +56,7 @@ class ProductListAPIView(ListAPIView):
             # TODO: remove after
             if category == "1":
                 queryset = queryset.filter(Q(top_category_id=category))
-            elif category == "3":
+            elif category == "4":
                 queryset = queryset.filter(Q(top_category_id=category))
             else:
                 queryset = queryset.filter(Q(category_id=category))
