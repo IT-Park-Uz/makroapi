@@ -23,6 +23,7 @@ urlpatterns = [
     path("docs/", SpectacularSwaggerView.as_view(url_name="api-schema"), name="docs"),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('test/<int:pk>/', upload_products, name='upload'),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

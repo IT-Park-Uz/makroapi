@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+Sitemap: https://test1.makromarket.uz/sitemap.xml
