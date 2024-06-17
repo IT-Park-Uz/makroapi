@@ -3,6 +3,8 @@ version: '3'
 volumes:
   testing_postgres_data: { }
   testing_postgres_data_backups: { }
+  testing_mongodb_data: { }
+  testing_mongodb_backups: { }
 
 services:
   django: &django
@@ -48,6 +50,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     ports:
       - "${MONGO_PORT}:27017"
+    volumes:
+      - testing_mongodb_data:/data/db
+      - testing_mongodb_backups:/backups
 
   celeryworker:
     <<: *django
