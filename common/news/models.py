@@ -23,6 +23,7 @@ class News(BaseModel):
     #                               options={'quality': 90})
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
                                  options={'quality': 90})
+    views_count = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Новости"

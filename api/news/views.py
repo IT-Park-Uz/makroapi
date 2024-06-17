@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.db.models import Q, Prefetch
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -11,7 +12,7 @@ from rest_framework.response import Response
 from api.news.serializers import NewsListSerializer, NewsDetailSerializer
 from api.paginator import CustomPagination
 from common.news.models import News, NewsCatalog
-from django.conf import settings
+from api.tasks import process_news_view
 
 
 @extend_schema(
@@ -58,4 +59,14 @@ class NewsDetailAPIView(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
+        ip_address = self.get_client_ip(request)
+        process_news_view.delay(instance.id, ip_address)
         return Response(serializer.data)
+
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip

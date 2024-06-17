@@ -16,6 +16,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - mongodb
     volumes:
       - .:/app:z
     env_file:
@@ -37,11 +38,18 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-
-
   redis:
     image: redis:6
     container_name: makro_uz_local_redis
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: stats
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
 
   celeryworker:
     <<: *django

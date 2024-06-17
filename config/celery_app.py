@@ -1,4 +1,5 @@
 import os
+from celery.schedules import crontab
 
 from celery import Celery
 
@@ -15,3 +16,10 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
+app.conf.beat_schedule = {
+    'delete-old-post-views-every-midnight': {
+        'task': 'api.tasks.delete_old_post_views',
+        'schedule': crontab(minute=1, hour=5),  # Запускать каждый день в полночь
+    },
+}

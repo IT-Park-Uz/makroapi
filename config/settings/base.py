@@ -51,6 +51,11 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+MONGO_USERNAME = env("MONGO_USERNAME", default="stats")
+MONGO_PASSWORD = env("MONGO_PASSWORD", default="password")
+MONGO_PORT = env("MONGO_PORT", default="27017")
+MONGO_CONNECTION_STRING = f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@mongodb:{MONGO_PORT}/?authSource=admin"
+MONGO_DATABASE_NAME = env("MONGO_DATABASE", default="stats")  # Replace with your database name
 
 # URLS
 # ------------------------------------------------------------------------------

@@ -41,3 +41,4 @@ drf_base64==2.0
 tablib[xlsx]==3.5.0
 django-jazzmin==2.6.0
 django-ckeditor==6.7.0
+pymongo==4.7.3

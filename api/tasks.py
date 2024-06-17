@@ -10,9 +10,12 @@ from django.core.files import File as CoreFile
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from tablib import Dataset
+from django.db.models import F
 
 from common.discount.models import Discount, DiscountStatus
+from common.news.models import News
 from common.product.models import File, Product, Category, ProductStatus, TopCategory
+from makro_uz.contrib.mongo_utils import db
 
 User = get_user_model()
 
@@ -98,7 +101,7 @@ def createProducts(file_id):
                     endDate=end_date,
                     status=2,
                     region_id=region_dict[region_str],
-                    order=num+1
+                    order=num + 1
                 )
 
                 if image_file_path:
@@ -161,3 +164,40 @@ def dailyChecking():
     if updateDiscounts:
         Discount.objects.bulk_update(updateDiscounts, fields=['status'])
     return {"message": "Status has changed successfully"}
+
+
+@shared_task
+def process_news_view(news_id, ip_address):
+    collection = db['news_view']
+    document_dict = {
+        'news_id': news_id,
+        'ip_address': ip_address
+    }
+    document = collection.find_one(document_dict)
+    if not document:
+        document_dict['viewed_at'] = datetime.datetime.utcnow()
+        _result = collection.insert_one(document_dict)
+        News.objects.filter(pk=news_id).update(views_count=F('views_count') + 1)
+
+
+@shared_task
+def process_discount_view(discount_id, ip_address):
+    collection = db['discount_view']
+    document_dict = {
+        'discount_id': discount_id,
+        'ip_address': ip_address
+    }
+    document = collection.find_one(document_dict)
+    if not document:
+        document_dict['viewed_at'] = datetime.datetime.utcnow()
+        _result = collection.insert_one(document_dict)
+        Discount.objects.filter(pk=discount_id).update(views_count=F('views_count') + 1)
+
+
+@shared_task
+def delete_old_post_views():
+    threshold_date = datetime.datetime.utcnow() - timedelta(days=1)
+    collection_news = db['news_view']
+    collection_discount = db['discount_view']
+    _result = collection_news.delete_many({'viewed_at': {'$lt': threshold_date}})
+    _result = collection_discount.delete_many({'viewed_at': {'$lt': threshold_date}})
