@@ -10,6 +10,7 @@ from api.paginator import CustomPagination
 from api.permissions import IsAdmin
 from common.discount.models import Discount, DiscountStatus, DiscountCatalog
 from django.conf import settings
+from api.tasks import process_discount_view
 
 
 class DiscountCreateAPIView(CreateAPIView):
@@ -55,7 +56,17 @@ class DiscountDetailAPIView(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
+        ip_address = self.get_client_ip(request)
+        process_discount_view.delay(instance.id, ip_address)
         return Response(serializer.data)
+
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
 
 
 class DiscountUpdateAPIView(UpdateAPIView):
