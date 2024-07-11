@@ -96,7 +96,7 @@ def createProducts(file_id):
                     title_ru=title_ru,
                     oldPrice=oldPrice,
                     newPrice=newPrice,
-                    percent=round(percent),
+                    percent=int(float(percent)),
                     startDate=start_date,
                     endDate=end_date,
                     status=2,
