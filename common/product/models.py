@@ -12,6 +12,7 @@ from common.users.base import BaseModel
 
 class Category(BaseModel):
     title = models.CharField(max_length=200, verbose_name="Название")
+    order = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         verbose_name = "Категория"

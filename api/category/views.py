@@ -11,7 +11,8 @@ from django.conf import settings
 
 class CategoryListAPIView(ListAPIView):
     queryset = Category.objects.filter(
-        categoryProducts__in=Product.objects.filter(status=ProductStatus.HasDiscount)).order_by('-id').distinct()
+        categoryProducts__in=Product.objects.filter(status=ProductStatus.HasDiscount)
+    ).order_by('order').distinct()
     serializer_class = CategoryCreateSerializer
     pagination_class = CustomPagination
 
