@@ -5,9 +5,14 @@ from common.product.models import Category, Product, File, CatalogFile, TopCateg
 from modeltranslation.admin import TabbedTranslationAdmin
 
 admin.site.register(CatalogFile)
-admin.site.register(Category)
+
 admin.site.register(TopCategory)
 
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ["title", "order"]
+    list_editable = ["order"]
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
