@@ -23,6 +23,7 @@ class DiscountListAPIView(ListAPIView):
     queryset = Discount.objects.filter(status=DiscountStatus.ACTIVE).all()
     serializer_class = DiscountListSerializer
     pagination_class = CustomPagination
+    filterset_fields = ["is_main"]
 
     @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
