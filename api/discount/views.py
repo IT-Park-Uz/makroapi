@@ -5,6 +5,7 @@ from django.views.decorators.vary import vary_on_cookie
 from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
+from api.discount.filters import DiscountFilter
 from api.discount.serializers import DiscountCreateSerializer, DiscountListSerializer, DiscountDetailSerializer
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
@@ -23,6 +24,7 @@ class DiscountListAPIView(ListAPIView):
     queryset = Discount.objects.filter(status=DiscountStatus.ACTIVE).all()
     serializer_class = DiscountListSerializer
     pagination_class = CustomPagination
+    filterset_class = DiscountFilter
 
     @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)

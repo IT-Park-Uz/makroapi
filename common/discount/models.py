@@ -34,6 +34,7 @@ class Discount(BaseModel):
     file = models.FileField(verbose_name="Файл", upload_to='uploadFiles', null=True, blank=True)
     endDateFile = models.DateField(default=timezone.now, verbose_name="Файл Время окончания", null=True, blank=True)
     views_count = models.IntegerField(default=0)
+    is_main = models.BooleanField(verbose_name="Показать на главной?", default=False)
 
     class Meta(BaseMeta):
         pass
