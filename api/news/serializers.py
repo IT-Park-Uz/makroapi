@@ -20,7 +20,7 @@ class NewsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ['id', 'title', 'description', 'photo_small', 'photo_medium',
-                  'photo_mobile', 'created_at', 'views_count']
+                  'photo_mobile', 'created_at', 'views_count', 'file']
 
 
 class NewsCatalogImagesSerializer(serializers.ModelSerializer):
@@ -55,4 +55,4 @@ class NewsDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ['id', 'title', 'description', 'photo_medium', 'photo_mobile', 'newsCatalog', 'created_at',
-                  'views_count']
+                  'views_count', 'file']
