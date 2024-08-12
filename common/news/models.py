@@ -23,6 +23,7 @@ class News(BaseModel):
     #                               options={'quality': 90})
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(400, 400)], format='PNG',
                                  options={'quality': 90})
+    file = models.FileField(verbose_name="Файл", upload_to='uploadFiles', null=True, blank=True)
     views_count = models.IntegerField(default=0)
 
     class Meta:
