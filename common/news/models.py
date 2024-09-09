@@ -17,6 +17,8 @@ class News(BaseModel):
     description = RichTextUploadingField(verbose_name="Описание", null=True, blank=True)
     photo = models.ImageField(verbose_name="Изображение", upload_to='newsImage')
     photo_medium = models.ImageField(verbose_name="Детальное изображение", upload_to='newsImage', null=True, blank=True)
+    photo_app = models.ImageField(verbose_name="Изображение для приложения", upload_to='newsImage',
+                                     null=True, blank=True)
     photo_mobile = models.ImageField(verbose_name="Изображение для мобилки", upload_to='newsImage')
 
     # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
