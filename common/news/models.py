@@ -19,6 +19,7 @@ class News(BaseModel):
     photo_medium = models.ImageField(verbose_name="Детальное изображение", upload_to='newsImage', null=True, blank=True)
     photo_app = models.ImageField(verbose_name="Изображение для приложения", upload_to='newsImage',
                                      null=True, blank=True)
+    url = models.URLField(verbose_name="Ссылка для перехода", null=True, blank=True)
     photo_mobile = models.ImageField(verbose_name="Изображение для мобилки", upload_to='newsImage')
 
     # photo_medium = ImageSpecField(source='photo', processors=[ResizeToFill(1200, 350)], format='PNG',
@@ -29,6 +30,7 @@ class News(BaseModel):
     file = models.FileField(verbose_name="Файл", upload_to='uploadFiles', null=True, blank=True)
     endDateFile = models.DateField(default=timezone.now, verbose_name="Файл Время окончания", null=True, blank=True)
     views_count = models.IntegerField(default=0)
+    hide = models.BooleanField(default=False, verbose_name="Скрыть?")
 
     class Meta:
         verbose_name = "Новости"

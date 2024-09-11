@@ -21,7 +21,7 @@ from api.tasks import process_news_view
     ]
 )
 class NewsListAPIView(ListAPIView):
-    queryset = News.objects.all().order_by('-created_at')
+    queryset = News.objects.filter(hide=False).order_by('-created_at')
     serializer_class = NewsListSerializer
     pagination_class = CustomPagination
 

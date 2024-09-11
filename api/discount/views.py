@@ -21,7 +21,7 @@ class DiscountCreateAPIView(CreateAPIView):
 
 
 class DiscountListAPIView(ListAPIView):
-    queryset = Discount.objects.filter(status=DiscountStatus.ACTIVE).all()
+    queryset = Discount.objects.filter(status=DiscountStatus.ACTIVE, hide=False).all()
     serializer_class = DiscountListSerializer
     pagination_class = CustomPagination
     filterset_class = DiscountFilter

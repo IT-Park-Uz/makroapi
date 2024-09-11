@@ -20,6 +20,7 @@ class Discount(BaseModel):
                                   options={'quality': 100})
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)], format='PNG',
                                  options={'quality': 100})
+    url = models.URLField(verbose_name="Ссылка для перехода", null=True, blank=True)
     photo_mobile = models.ImageField("Изображение для мобилки", upload_to='discountImageMobile')
     photo_app = models.ImageField(verbose_name="Изображение для приложения", upload_to='discountImageMobile',
                                   null=True, blank=True)
@@ -37,6 +38,7 @@ class Discount(BaseModel):
     endDateFile = models.DateField(default=timezone.now, verbose_name="Файл Время окончания", null=True, blank=True)
     views_count = models.IntegerField(default=0)
     is_main = models.BooleanField(verbose_name="Показать на главной?", default=False)
+    hide = models.BooleanField(default=False, verbose_name="Скрыть?")
 
     class Meta(BaseMeta):
         pass
