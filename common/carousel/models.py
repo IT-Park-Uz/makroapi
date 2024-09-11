@@ -9,8 +9,8 @@ class CarouselItem(BaseModel):
     news = models.ForeignKey(News, on_delete=models.CASCADE, null=True, blank=True)
     display_order = models.IntegerField(default=0, verbose_name="Порядок отображения")
     url = models.URLField(verbose_name="Ссылка для перехода", null=True, blank=True)
-    photo = models.ImageField("Изображение", upload_to='carouselImage')
-    photo_mobile = models.ImageField("Изображение для мобилки", upload_to='carouselImageMobile')
+    photo = models.ImageField("Изображение", upload_to='carouselImage', null=True, blank=True)
+    photo_mobile = models.ImageField("Изображение для мобилки", upload_to='carouselImageMobile', null=True, blank=True)
 
     class Meta:
         verbose_name = "Элемент карусели"
