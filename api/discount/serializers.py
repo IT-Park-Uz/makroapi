@@ -24,7 +24,7 @@ class DiscountListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Discount
-        fields = ['id', 'title', 'photo_medium', 'url', 'startDate', 'endDate', 'status', 'titleFile', 'file',
+        fields = ['id', 'title', 'photo_medium', 'startDate', 'endDate', 'status', 'titleFile', 'file',
                   'endDateFile', 'photo_mobile', 'views_count']
 
 
