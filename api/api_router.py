@@ -15,5 +15,6 @@ urlpatterns += [
     path('news', include("api.news.urls")),
     path('location', include("api.location.urls")),
     path('category', include("api.category.urls")),
-    path('carousel', include("api.carousel.urls"))
+    path('carousel', include("api.carousel.urls")),
+    path('toys', include("api.ferma.urls")),
 ]

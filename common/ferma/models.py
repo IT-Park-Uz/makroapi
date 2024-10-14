@@ -8,6 +8,7 @@ class Toys(models.Model):
     description = models.TextField(blank=True)
     role = models.CharField(max_length=255)
     facts = models.CharField(max_length=500)
+    order = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
