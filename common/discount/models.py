@@ -20,7 +20,6 @@ class Discount(BaseModel):
                                   options={'quality': 100})
     photo_small = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)], format='PNG',
                                  options={'quality': 100})
-    url = models.URLField(verbose_name="Ссылка для перехода", null=True, blank=True)
     photo_mobile = models.ImageField("Изображение для мобилки", upload_to='discountImageMobile')
     photo_app = models.ImageField(verbose_name="Изображение для приложения", upload_to='discountImageMobile',
                                   null=True, blank=True)
@@ -28,7 +27,6 @@ class Discount(BaseModel):
     #                                      format='PNG', options={'quality': 100})
     photo_small_mobile = ImageSpecField(source='photo', processors=[ResizeToFill(1463, 420)],
                                         format='PNG', options={'quality': 100})
-    url = models.CharField(max_length=250, null=True, blank=True)
     status = models.IntegerField(choices=DiscountStatus.choices, verbose_name="Статус", default=DiscountStatus.ACTIVE)
     startDate = models.DateField(default=timezone.now, verbose_name="Время начала")
     endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")

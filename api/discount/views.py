@@ -52,6 +52,7 @@ class DiscountDetailAPIView(RetrieveAPIView):
         )
     ).all()
     serializer_class = DiscountDetailSerializer
+    lookup_field = 'pk'
 
     @method_decorator(cache_page(settings.CACHE_TTL))
     @method_decorator(vary_on_cookie)
