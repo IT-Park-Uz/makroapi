@@ -104,6 +104,7 @@ LOCAL_APPS = [
     "common.product",
     "common.users",
     "common.carousel",
+    "common.ferma",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -410,6 +411,7 @@ MODELTRANSLATION_TRANSLATION_FILES = (
     'common.discount.translations',
     'common.news.translations',
     'common.product.translations',
+    'common.ferma.translations',
 )
 
 JAZZMIN_SETTINGS = {
@@ -607,3 +609,4 @@ CKEDITOR_CONFIGS = {
 }
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 STAGE = env("STAGE")
+FRONTEND_URL = env("FRONTEND_URL")

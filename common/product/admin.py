@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.conf import settings
+from modeltranslation.admin import TabbedTranslationAdmin
 
 from common.product.models import Category, Product, File, CatalogFile, TopCategory, ProductRegion
-from modeltranslation.admin import TabbedTranslationAdmin
 
 admin.site.register(CatalogFile)
 
@@ -11,8 +12,16 @@ admin.site.register(TopCategory)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["title", "order"]
+    list_display = ["title", "order", "show_link"]
     list_editable = ["order"]
+
+    def show_link(self, obj):
+        """Кнопка для перехода на URL категории."""
+        url = f"{settings.FRONTEND_URL}/products?category={obj.id}"
+        return mark_safe(f'<a class="button" href="{url}" target="_blank">Открыть категорию</a>')
+
+    show_link.short_description = "Ссылка на категорию"
+
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
