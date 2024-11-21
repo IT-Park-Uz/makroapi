@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.conf import settings
 from modeltranslation.admin import TabbedTranslationAdmin
 
 from common.product.models import Category, Product, File, CatalogFile, TopCategory, ProductRegion
