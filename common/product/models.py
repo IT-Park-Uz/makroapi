@@ -13,6 +13,7 @@ from common.users.base import BaseModel
 class Category(BaseModel):
     title = models.CharField(max_length=200, verbose_name="Название")
     order = models.PositiveSmallIntegerField(default=0)
+    is_hide = models.BooleanField(verbose_name="Скрыть?", default=False)
 
     class Meta:
         verbose_name = "Категория"
