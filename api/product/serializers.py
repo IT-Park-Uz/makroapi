@@ -38,7 +38,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'code', 'title', 'photo_medium', 'newPrice', 'oldPrice', 'percent', 'startDate',
-                  'endDate', 'status']
+                  'endDate', 'status', 'isExclusive']
 
     def get_photo_medium(self, instance) -> Optional[str]:
         request = self.context.get('request')
