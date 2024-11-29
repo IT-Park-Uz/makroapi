@@ -73,6 +73,10 @@ class ProductListAPIView(ListAPIView):
         if region:
             queryset = queryset.filter(Q(region=region))
 
+        isExclusive = self.request.query_params.get('isExclusive')
+        if isExclusive:
+            queryset = queryset.filter(Q(isExclusive=isExclusive))
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, context={'request': self.request}, many=True)

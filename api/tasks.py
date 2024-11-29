@@ -78,6 +78,7 @@ def createProducts(file_id):
                 "Ташкент": 1,
                 # "Долина": 2
             }
+            isExclusive = True if data[13] == "+" else False
             percent = ((oldPrice - newPrice) / oldPrice) * 100
             start_date = data[2]
             end_date = data[3]
