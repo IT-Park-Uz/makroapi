@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='promo_type',
-            field=models.CharField(choices=[('exclusive', 'Эксклюзивно'), ('one2one', '1+1'), ('two2one', '2+1'), ('three2one', '3+1')], default=None, verbose_name='Тип акции'),
+            field=models.CharField(choices=[('exclusive', 'Эксклюзивно'), ('one2one', '1+1'), ('two2one', '2+1'), ('three2one', '3+1')],
+                                   default=None, verbose_name='Тип акции', null=True, blank=True),
         ),
     ]

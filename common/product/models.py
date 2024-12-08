@@ -107,7 +107,8 @@ class Product(BaseModel):
     endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
     status = models.IntegerField(choices=ProductStatus.choices, default=ProductStatus.HasDiscount,
                                  verbose_name="Статус")
-    promo_type = models.CharField(verbose_name="Тип акции", default=None, choices=PromoTypeChoices.choices)
+    promo_type = models.CharField(verbose_name="Тип акции", default=None, choices=PromoTypeChoices.choices,
+                                  null=True, blank=True)
     order = models.IntegerField(default=1)
 
     class Meta:
