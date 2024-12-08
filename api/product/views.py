@@ -73,9 +73,9 @@ class ProductListAPIView(ListAPIView):
         if region:
             queryset = queryset.filter(Q(region=region))
 
-        isExclusive = self.request.query_params.get('isExclusive')
-        if isExclusive:
-            queryset = queryset.filter(Q(isExclusive=isExclusive))
+        promo_type = self.request.query_params.get('promo_type')
+        if promo_type:
+            queryset = queryset.filter(Q(promo_type=promo_type))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
