@@ -70,7 +70,7 @@ def createProducts(file_id):
                 top_category, created = TopCategory.objects.get_or_create(title=t1, title_ru=t2)
             title = data[4]
             title_ru = data[5]
-            oldPrice = data[8]
+            oldPrice = data[8] if data[8] else 1
             newPrice = data[9]
             region_str = data[12].strip()
             region_dict = {
