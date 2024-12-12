@@ -85,7 +85,8 @@ def createProducts(file_id):
                 "1+1": Product.PromoTypeChoices.ONE2ONE,
                 "2+1": Product.PromoTypeChoices.TWO2ONE,
                 "3+1": Product.PromoTypeChoices.THREE2ONE,
-                "эксклюзив": Product.PromoTypeChoices.EXCLUSIVE
+                "эксклюзив": Product.PromoTypeChoices.EXCLUSIVE,
+                None: None
             }
             percent = ((oldPrice - newPrice) / oldPrice) * 100
             start_date = data[2]
