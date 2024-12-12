@@ -78,7 +78,14 @@ def createProducts(file_id):
                 "Ташкент": 1,
                 # "Долина": 2
             }
-            isExclusive = True if data[13] == "+" else False
+            promo_type = data[13]
+            promo_type = promo_type.strip().lower() if promo_type else None
+            promo_type_mapper = {
+                "1+1": Product.PromoTypeChoices.ONE2ONE,
+                "2+1": Product.PromoTypeChoices.TWO2ONE,
+                "3+1": Product.PromoTypeChoices.THREE2ONE,
+                "эксклюзив": Product.PromoTypeChoices.EXCLUSIVE
+            }
             percent = ((oldPrice - newPrice) / oldPrice) * 100
             start_date = data[2]
             end_date = data[3]
@@ -102,7 +109,8 @@ def createProducts(file_id):
                     endDate=end_date,
                     status=2,
                     region_id=region_dict[region_str],
-                    order=num + 1
+                    order=num + 1,
+                    promo_type=promo_type_mapper[promo_type]
                 )
 
                 if image_file_path:

@@ -86,6 +86,12 @@ class ProductRegion(models.Model):
 
 
 class Product(BaseModel):
+    class PromoTypeChoices(models.TextChoices):
+        EXCLUSIVE = "exclusive", "Эксклюзивно"
+        ONE2ONE = "one2one", "1+1"
+        TWO2ONE = "two2one", "2+1"
+        THREE2ONE = "three2one", "3+1"
+
     category = models.ForeignKey(Category, verbose_name="Категория продукта", related_name='categoryProducts',
                                  on_delete=models.SET_NULL, null=True, blank=True)
     top_category = models.ForeignKey(TopCategory, verbose_name="Высшая категория", related_name='Top_categoryProducts',
@@ -101,7 +107,8 @@ class Product(BaseModel):
     endDate = models.DateField(default=timezone.now, verbose_name="Время окончания")
     status = models.IntegerField(choices=ProductStatus.choices, default=ProductStatus.HasDiscount,
                                  verbose_name="Статус")
-    isExclusive = models.BooleanField(verbose_name="Эксклюзивный?", default=False)
+    promo_type = models.CharField(verbose_name="Тип акции", default=None, choices=PromoTypeChoices.choices,
+                                  null=True, blank=True)
     order = models.IntegerField(default=1)
 
     class Meta:
