@@ -4,6 +4,7 @@ import shutil
 import zipfile
 
 from datetime import timedelta
+import traceback
 
 from celery import shared_task
 from django.core.files import File as CoreFile
@@ -120,7 +121,8 @@ def createProducts(file_id):
                         product.status = ProductStatus.HasDiscount if settings.STAGE == 'prod' else ProductStatus.NoDiscount
                 product.save()
             except Exception as e:
-                message += f"Error saving product {code}: {str(e)}\n"
+                error_details = traceback.format_exc()  # Получение полного текста исключения
+                message += f"Error saving product {code}:\n{error_details}\n"
                 file.save()
         file.total = total
         file.processed = processed
