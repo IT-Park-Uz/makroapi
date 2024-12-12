@@ -37,8 +37,8 @@ class FileAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(TabbedTranslationAdmin):
-    list_display = ['title', 'display_image', 'code', 'region', 'newPrice', 'promo_type', 'endDate', 'status', 'order']
-    list_display_links = list_display[:-2]
+    list_display = ['title', 'display_image', 'code', 'region', 'newPrice',  'endDate', 'promo_type', 'status', 'order']
+    list_display_links = list_display[:-3]
     list_filter = ['category', 'top_category', 'promo_type']
     list_editable = ["status", "order", "promo_type"]
     search_fields = ['title', 'newPrice', 'oldPrice']
