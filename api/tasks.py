@@ -4,6 +4,7 @@ import shutil
 import zipfile
 
 from datetime import timedelta
+import traceback
 
 from celery import shared_task
 from django.core.files import File as CoreFile
@@ -70,7 +71,7 @@ def createProducts(file_id):
                 top_category, created = TopCategory.objects.get_or_create(title=t1, title_ru=t2)
             title = data[4]
             title_ru = data[5]
-            oldPrice = data[8]
+            oldPrice = data[8] if data[8] else 1
             newPrice = data[9]
             region_str = data[12].strip()
             region_dict = {
@@ -84,7 +85,8 @@ def createProducts(file_id):
                 "1+1": Product.PromoTypeChoices.ONE2ONE,
                 "2+1": Product.PromoTypeChoices.TWO2ONE,
                 "3+1": Product.PromoTypeChoices.THREE2ONE,
-                "эксклюзив": Product.PromoTypeChoices.EXCLUSIVE
+                "эксклюзив": Product.PromoTypeChoices.EXCLUSIVE,
+                None: None
             }
             percent = ((oldPrice - newPrice) / oldPrice) * 100
             start_date = data[2]
@@ -120,7 +122,8 @@ def createProducts(file_id):
                         product.status = ProductStatus.HasDiscount if settings.STAGE == 'prod' else ProductStatus.NoDiscount
                 product.save()
             except Exception as e:
-                message += f"Error saving product {code}: {str(e)}\n"
+                error_details = traceback.format_exc()  # Получение полного текста исключения
+                message += f"Error saving product {code}:\n{error_details}\n"
                 file.save()
         file.total = total
         file.processed = processed
