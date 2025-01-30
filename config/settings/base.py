@@ -105,6 +105,7 @@ LOCAL_APPS = [
     "common.users",
     "common.carousel",
     "common.ferma",
+    "common.files",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
