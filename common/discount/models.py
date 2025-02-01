@@ -45,6 +45,19 @@ class Discount(BaseModel):
         return f"Скидка #{self.id}"
 
 
+class DiscountFiles(models.Model):
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, related_name="files")
+    titleFile = models.CharField(max_length=200, verbose_name="Название Файл")
+    file = models.FileField(verbose_name="Файл", upload_to='uploadFiles', null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Прикрепляемые файлы"
+        verbose_name_plural = "Прикрепляемые файлы"
+
+    def __str__(self):
+        return self.titleFile
+
+
 class DiscountCatalog(BaseModel):
     discount = models.ForeignKey(Discount, related_name="discountCatalog", on_delete=models.CASCADE)
     photo_uz = models.ImageField(verbose_name="Изображение uz", upload_to='discountCatalogImage', null=True, blank=True)
