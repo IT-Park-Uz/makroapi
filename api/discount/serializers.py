@@ -2,7 +2,7 @@ from typing import Optional
 
 from rest_framework import serializers
 
-from common.discount.models import Discount, DiscountCatalog
+from common.discount.models import Discount, DiscountCatalog, DiscountFiles
 from config.settings.base import env
 from makro_uz.contrib.ckeditor_serializer_fields import FixAbsolutePathSerializer
 
@@ -47,12 +47,19 @@ class DiscountCatalogImagesSerializer(serializers.ModelSerializer):
         fields = ['id', 'photo_uz', 'photo_ru']
 
 
+class DiscountFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiscountFiles
+        fields = "__all__"
+
+
 class DiscountDetailSerializer(serializers.ModelSerializer):
     discountCatalog = DiscountCatalogImagesSerializer(many=True)
+    files = DiscountFilesSerializer(many=True)
     description = FixAbsolutePathSerializer()
     photo_medium = serializers.ImageField(read_only=True)
 
     class Meta:
         model = Discount
         fields = ['id', 'title', 'description', 'photo_medium', 'startDate', 'endDate', 'status', 'titleFile',
-                  'file', 'endDateFile', 'discountCatalog', 'photo_mobile', 'views_count']
+                  'file', 'endDateFile', 'discountCatalog', 'photo_mobile', 'views_count', 'files']

@@ -413,6 +413,7 @@ MODELTRANSLATION_TRANSLATION_FILES = (
     'common.news.translations',
     'common.product.translations',
     'common.ferma.translations',
+    'common.files.translations',
 )
 
 JAZZMIN_SETTINGS = {

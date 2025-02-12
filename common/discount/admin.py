@@ -1,9 +1,14 @@
 from django.contrib import admin
-from django.utils.safestring import mark_safe
 from django.core.cache import cache
-
-from common.discount.models import Discount, DiscountCatalog
+from django.utils.safestring import mark_safe
 from modeltranslation.admin import TabbedTranslationAdmin
+
+from common.discount.models import Discount, DiscountCatalog, DiscountFiles
+
+
+class DiscountFilesInline(admin.TabularInline):
+    model = DiscountFiles
+    extra = 0
 
 
 class DiscountCatalogAdmin(admin.TabularInline):
@@ -26,7 +31,8 @@ class DiscountCatalogAdmin(admin.TabularInline):
 class DiscountAdmin(TabbedTranslationAdmin):
     list_display = ['startDate', 'endDate', 'display_image', 'status']
     exclude = ['created_at']
-    inlines = [DiscountCatalogAdmin]
+    inlines = [DiscountFilesInline, DiscountCatalogAdmin]
+    readonly_fields = ["titleFile", "file", "endDateFile"]
 
     def display_image(self, obj):
         if obj.photo:

@@ -9,7 +9,7 @@ from api.discount.filters import DiscountFilter
 from api.discount.serializers import DiscountCreateSerializer, DiscountListSerializer, DiscountDetailSerializer
 from api.paginator import CustomPagination
 from api.permissions import IsAdmin
-from common.discount.models import Discount, DiscountStatus, DiscountCatalog
+from common.discount.models import Discount, DiscountStatus, DiscountCatalog, DiscountFiles
 from django.conf import settings
 from api.tasks import process_discount_view
 
@@ -49,6 +49,10 @@ class DiscountDetailAPIView(RetrieveAPIView):
         Prefetch(
             lookup='discountCatalog',
             queryset=DiscountCatalog.objects.all()
+        ),
+        Prefetch(
+            lookup='files',
+            queryset=DiscountFiles.objects.all()
         )
     ).all()
     serializer_class = DiscountDetailSerializer

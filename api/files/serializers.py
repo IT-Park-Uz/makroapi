@@ -6,4 +6,4 @@ from common.files.models import Offerta
 class OffertaListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offerta
-        fields = ["__all__"]
+        fields = "__all__"
